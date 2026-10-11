@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<footer class="site-footer" th:fragment="footer">
+    <div class="site-footer__inner container">
+        <div class="site-footer__brand">
+            <span class="brand__name">eletrocar</span>
+            <p>Tudo sobre carros elétricos em um só lugar.</p>
+        </div>
+
+        <ul class="site-footer__links">
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Contato</a></li>
+            <li><a href="#">Termos de uso</a></li>
+            <li><a href="#">Privacidade</a></li>
+        </ul>
+    </div>
+
+    <div class="site-footer__bottom container">
+        <small>&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> Eletrocar. Todos os direitos reservados.</small>
+    </div>
+</footer>
+
+</body>
+</html>

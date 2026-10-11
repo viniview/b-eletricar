@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header class="site-header" th:fragment="header">
+    <div class="site-header__top container">
+
+        <a class="brand" th:href="@{/}" aria-label="Eletrocar, página inicial">
+            <span class="brand__name">eletrocar</span>
+        </a>
+
+        <form class="search" role="search" th:action="@{/busca}" method="get">
+            <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>
+            </svg>
+            <input class="search__input" type="search" name="q"
+                   placeholder="Buscar veículo, marca ou modelo"
+                   aria-label="Buscar veículo, marca ou modelo">
+        </form>
+    </div>
+
+    <nav class="site-nav" aria-label="Principal">
+        <ul class="site-nav__list container">
+            <!-- Os href="#" viram th:href="@{/...}" quando as páginas existirem -->
+            <li><a class="site-nav__link site-nav__link--accent" href="#">Comparar veículos</a></li>
+            <li><a class="site-nav__link" href="#">Tesla</a></li>
+            <li><a class="site-nav__link" href="#">BYD</a></li>
+            <li><a class="site-nav__link" href="#">Polestar</a></li>
+            <li><a class="site-nav__link" href="#">Rivian</a></li>
+            <li><a class="site-nav__link" href="#">Lucid</a></li>
+            <li><a class="site-nav__link" href="#">NIO</a></li>
+            <li><a class="site-nav__link" href="#">GWM Ora</a></li>
+            <li><a class="site-nav__link" href="#">Outro</a></li>
+        </ul>
+    </nav>
+</header>
+
+</body>
+</html>

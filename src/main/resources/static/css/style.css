@@ -1,0 +1,246 @@
+/* ---------- Tokens ---------- */
+:root {
+    --bg: #f4f7f8;
+    --surface: #ffffff;
+    --ink: #0c1a24;
+    --ink-soft: #566873;
+    --line: #dde5e9;
+    --volt: #00c389;
+    --volt-deep: #008f68;
+    --volt-tint: #e3f8f0;
+    --black: #0a0a0a;
+    --black-line: #242424;
+    --on-black: #f2f2f2;
+    --on-black-soft: #9a9a9a;
+
+    --font-display: "Sora", system-ui, sans-serif;
+    --font-body: "Manrope", system-ui, sans-serif;
+
+    --radius-pill: 999px;
+    --header-h: 72px;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; }
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+:focus-visible {
+    outline: 2px solid var(--volt-deep);
+    outline-offset: 3px;
+}
+
+/* ---------- Cabeçalho ---------- */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--black);
+    border-bottom: 1px solid var(--black-line);
+}
+
+.site-header__top {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    min-height: var(--header-h);
+}
+
+/* Logo */
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    color: #fff;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.brand__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.75rem;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+/* Busca */
+.search {
+    position: relative;
+    flex: 1;
+    max-width: 520px;
+    margin-left: auto;
+}
+
+.search__icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    fill: none;
+    stroke: var(--on-black-soft);
+    stroke-width: 2;
+    stroke-linecap: round;
+    pointer-events: none;
+}
+
+.search__input {
+    width: 100%;
+    height: 44px;
+    padding: 0 1.25rem 0 2.9rem;
+    border: 1px solid var(--black-line);
+    border-radius: var(--radius-pill);
+    background: #161616;
+    color: var(--on-black);
+    font: inherit;
+    font-size: .95rem;
+    transition: border-color .2s, background .2s, box-shadow .2s;
+}
+
+.search__input::placeholder { color: var(--on-black-soft); }
+
+.search__input:focus {
+    outline: none;
+    background: #1d1d1d;
+    border-color: var(--volt);
+    box-shadow: 0 0 0 4px rgba(0, 195, 137, .2);
+}
+
+/* Menu */
+.site-nav { border-top: 1px solid var(--black-line); }
+
+.site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    margin: 0 auto;
+    padding-block: .5rem;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.site-nav__list::-webkit-scrollbar { display: none; }
+
+.site-nav__link {
+    display: block;
+    padding: .45rem 1rem;
+    border-radius: var(--radius-pill);
+    color: var(--on-black-soft);
+    font-size: .92rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background .2s, color .2s;
+}
+
+.site-nav__link:hover,
+.site-nav__link.is-active {
+    background: #1d1d1d;
+    color: #fff;
+}
+
+/* "Comparar veículos" é a ação principal do menu */
+.site-nav__link--accent {
+    margin-right: .75rem;
+    background: var(--volt);
+    color: var(--black);
+    font-weight: 600;
+}
+.site-nav__link--accent:hover { background: #fff; color: var(--black); }
+
+/* ---------- Conteúdo ---------- */
+.page { padding-block: 4rem; }
+
+.page__title {
+    max-width: 18ch;
+    margin: 0 0 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+
+.page__lead {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 1.15rem;
+}
+
+/* ---------- Rodapé ---------- */
+.site-footer {
+    margin-top: 4rem;
+    background: var(--black);
+    color: var(--on-black-soft);
+    border-top: 1px solid var(--black-line);
+}
+
+.site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: 3rem 2rem;
+}
+
+.site-footer .brand__name { color: #fff; }
+.site-footer__brand p { margin: .5rem 0 0; font-size: .95rem; }
+
+.site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-footer__links a {
+    color: var(--on-black);
+    font-size: .92rem;
+    text-decoration: none;
+    transition: color .2s;
+}
+.site-footer__links a:hover { color: var(--volt); }
+
+.site-footer__bottom {
+    padding-block: 1.25rem 2rem;
+    border-top: 1px solid var(--black-line);
+    font-size: .85rem;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 720px) {
+    .site-header__top {
+        flex-wrap: wrap;
+        gap: .75rem;
+        padding-block: .75rem;
+    }
+    .search { flex-basis: 100%; max-width: none; margin-left: 0; order: 3; }
+    .brand__name { font-size: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}
