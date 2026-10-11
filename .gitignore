@@ -1,0 +1,30 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Maven e arquivos gerados pela compilação
+target/
+*.class
+*.jar
+*.war
+
+# Arquivos temporários e logs
+inputFiles
+createdFiles
+*.log
+
+# Configurações do VS Code e IDEs
+.vscode/
+.idea/
+*.iml
+*.factorypath
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
