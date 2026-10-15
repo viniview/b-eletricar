@@ -28,3 +28,8 @@ createdFiles
 # Arquivos do Sistema Operacional
 .DS_Store
 Thumbs.db
+
+# Variáveis de ambiente / segredos do Docker
+.env
+.env.local
+!.env.example
