@@ -9,43 +9,46 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.example.b_eletricar.security.CustomOidcUser;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private final CustomOidcUser customOidcUserService;
+
+    public SecurityConfig(CustomOidcUser customOidcUserService) {
+        this.customOidcUserService = customOidcUserService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.FORWARD, jakarta.servlet.DispatcherType.ERROR).permitAll()
-                
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-
-                .requestMatchers("/h2-console/**").permitAll()
-
-                .requestMatchers("/", "/veiculos", "/veiculos/filtrar", "/veiculos/{id}", 
-                                 "/veiculos/proposta", "/veiculos/test-drive").permitAll()
-
-                .requestMatchers("/admin/**", "/veiculos/admin/**").hasRole("ADMIN")
-
-                .anyRequest().authenticated()
-            )
 
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/veiculos", true)
+                .defaultSuccessUrl("/", true)
                 .permitAll()
             )
-
+            .oauth2Login(oauth2 -> oauth2
+                .loginPage("/login")
+                .userInfoEndpoint(userInfo -> userInfo
+                    .oidcUserService(customOidcUserService)
+                )
+                .defaultSuccessUrl("/perfil", true)
+            )
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/error", "/login", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+                .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+                .anyRequest().authenticated()
+            )
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/veiculos?logout")
+                .logoutSuccessUrl("/login?logout")
                 .permitAll()
             );
-
-        http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/veiculos/proposta", "/veiculos/test-drive"));
-        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
     }

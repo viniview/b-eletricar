@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Perfil</title>
+</head>
+<body>
+    <main class="page container">
+        <h1 class="page__title">Perfil</h1>
+        <p class="page__lead">Dados da sua conta.</p>
+
+        <section class="profile" th:if="${usuario != null}">
+            <table class="profile__table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="profile__photo-col">Foto</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">E-mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="profile__photo-cell">
+                            <!-- Espaço reservado para a foto de perfil (futuro) -->
+                            <div class="avatar" aria-hidden="true">
+                                <span class="avatar__initials"
+                                      th:text="${#strings.isEmpty(usuario.nome) ? '?' : #strings.substring(usuario.nome, 0, 1)}">?</span>
+                            </div>
+                        </td>
+                        <td th:text="${usuario.nome}">Nome do usuário</td>
+                        <td th:text="${usuario.email}">email@exemplo.com</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <p class="page__lead" th:if="${usuario == null}">
+            Usuário não encontrado.
+        </p>
+    </main>
+</body>
+</html>

@@ -188,6 +188,58 @@ main { flex: 1; }
     font-size: 1.15rem;
 }
 
+/* ---------- Perfil ---------- */
+.profile { margin-top: 2rem; }
+
+.profile__table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.profile__table th,
+.profile__table td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+.profile__table thead th {
+    background: var(--volt-tint);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: .9rem;
+    letter-spacing: .02em;
+}
+
+.profile__table tbody tr:last-child td { border-bottom: none; }
+
+.profile__photo-col,
+.profile__photo-cell { width: 96px; }
+
+/* Círculo reservado para a futura foto de perfil.
+   Basta definir background-image no .avatar quando a imagem existir. */
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--volt);
+    background-size: cover;
+    background-position: center;
+    color: var(--black);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.avatar__initials { line-height: 1; }
+
 /* ---------- Rodapé ---------- */
 .site-footer {
     margin-top: 4rem;

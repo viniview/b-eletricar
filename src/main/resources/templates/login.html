@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Entrar</title>
+</head>
+<body>
+    <main class="page container auth">
+        <h1 class="page__title">Entrar</h1>
+        <p class="page__lead">Acesse sua conta para gerenciar veículos e propostas.</p>
+
+        <p class="auth__msg auth__msg--error" th:if="${param.error}">
+            E-mail ou senha inválidos.
+        </p>
+        <p class="auth__msg auth__msg--ok" th:if="${param.logout}">
+            Você saiu da sua conta.
+        </p>
+
+        <form class="auth__form" th:action="@{/login}" method="post">
+            <label class="auth__label" for="username">E-mail</label>
+            <input class="auth__input" id="username" name="username" type="email"
+                   autocomplete="username" required autofocus>
+
+            <label class="auth__label" for="password">Senha</label>
+            <input class="auth__input" id="password" name="password" type="password"
+                   autocomplete="current-password" required>
+
+            <button class="auth__submit" type="submit">Entrar</button>
+        </form>
+
+        <a class="auth__google" th:href="@{/oauth2/authorization/google}">Entrar com Google</a>
+    </main>
+</body>
+</html>

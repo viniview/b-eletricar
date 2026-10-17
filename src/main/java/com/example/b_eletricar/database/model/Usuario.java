@@ -1,16 +1,14 @@
 package com.example.b_eletricar.database.model;
 
 import jakarta.persistence.*;
-import java.util.Collection;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import java.util.Collection;
 import com.example.b_eletricar.database.model.enums.Roles;
 
 @Entity
 @Table(name = "usuario")
+@Getter @Setter 
 public class Usuario {
 
     @Id
@@ -20,13 +18,15 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String senha;
 
     private String nome;
 
     @Enumerated (EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Roles role;
     
+    @Column(unique = true)
+    private String subId;
 }
