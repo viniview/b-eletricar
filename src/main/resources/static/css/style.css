@@ -296,3 +296,122 @@ main { flex: 1; }
 @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
 }
+
+/* ---------- Botão ---------- */
+.btn {
+    --btn-bg: var(--volt);
+    --btn-ink: var(--black);
+    --btn-border: transparent;
+    --btn-bg-hover: var(--volt-deep);
+    --btn-ink-hover: #fff;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: 44px;
+    padding: 0 1.5rem;
+    border: 1px solid var(--btn-border);
+    border-radius: var(--radius-pill);
+    background: var(--btn-bg);
+    color: var(--btn-ink);
+    font-family: var(--font-body);
+    font-size: .95rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+
+.btn:hover {
+    background: var(--btn-bg-hover);
+    color: var(--btn-ink-hover);
+}
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 195, 137, .3);
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    opacity: .5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Ícones SVG dentro do botão */
+.btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+/* ---- Variantes ---- */
+
+/* Preto: ótimo sobre fundos claros */
+.btn--dark {
+    --btn-bg: var(--black);
+    --btn-ink: #fff;
+    --btn-bg-hover: var(--volt);
+    --btn-ink-hover: var(--black);
+}
+
+/* Contorno: ação secundária */
+.btn--outline {
+    --btn-bg: transparent;
+    --btn-ink: var(--ink);
+    --btn-border: var(--line);
+    --btn-bg-hover: var(--volt-tint);
+    --btn-ink-hover: var(--ink);
+}
+.btn--outline:hover { border-color: var(--volt); }
+
+/* Suave: ação terciária */
+.btn--soft {
+    --btn-bg: var(--volt-tint);
+    --btn-ink: var(--volt-deep);
+    --btn-bg-hover: var(--volt);
+    --btn-ink-hover: var(--black);
+}
+
+/* Para usar sobre fundos pretos (header, footer) */
+.btn--on-dark {
+    --btn-bg: transparent;
+    --btn-ink: var(--on-black);
+    --btn-border: var(--black-line);
+    --btn-bg-hover: #1d1d1d;
+    --btn-ink-hover: #fff;
+}
+
+/* ---- Tamanhos ---- */
+.btn--sm { min-height: 36px; padding: 0 1rem; font-size: .85rem; }
+.btn--lg { min-height: 52px; padding: 0 2rem; font-size: 1.05rem; }
+
+/* Largura total (útil no mobile ou em formulários) */
+.btn--block { display: flex; width: 100%; }
+
+/* Botão só com ícone */
+.btn--icon { width: 44px; padding: 0; }
+.btn--icon.btn--sm { width: 36px; }
+.btn--icon.btn--lg { width: 52px; }
+
+.avatar--sm {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: background .2s, box-shadow .2s;
+}
+a.avatar:hover { background: #fff; }
+a.avatar:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(0, 195, 137, .3); }

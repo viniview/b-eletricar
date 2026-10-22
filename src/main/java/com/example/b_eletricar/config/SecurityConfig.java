@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.b_eletricar.security.CustomOidcUser;
+import com.example.b_eletricar.security.LoginFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -17,18 +18,21 @@ import com.example.b_eletricar.security.CustomOidcUser;
 public class SecurityConfig {
 
     private final CustomOidcUser customOidcUserService;
+    private final LoginFailureHandler loginFailureHandler;
 
-    public SecurityConfig(CustomOidcUser customOidcUserService) {
+    public SecurityConfig(CustomOidcUser customOidcUserService,
+                          LoginFailureHandler loginFailureHandler) {
         this.customOidcUserService = customOidcUserService;
+        this.loginFailureHandler = loginFailureHandler;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/perfil", true)
+                .failureHandler(loginFailureHandler)
                 .permitAll()
             )
             .oauth2Login(oauth2 -> oauth2
@@ -37,9 +41,11 @@ public class SecurityConfig {
                     .oidcUserService(customOidcUserService)
                 )
                 .defaultSuccessUrl("/perfil", true)
+                .failureUrl("/login?erroGoogle")
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/error", "/login", "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                .requestMatchers("/", "/error", "/login", "/cadastro",
+                                 "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
                 .anyRequest().authenticated()
@@ -47,7 +53,9 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
-                .permitAll()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
             );
 
         return http.build();

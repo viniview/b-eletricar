@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import com.example.b_eletricar.database.model.Usuario;
 
-public class UsuarioPrincipal extends DefaultOidcUser {
+public class UsuarioPrincipal extends DefaultOidcUser implements UsuarioLogado {
 
     private final Usuario usuario;
 

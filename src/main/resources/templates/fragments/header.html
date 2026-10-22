@@ -17,6 +17,15 @@
                    placeholder="Buscar veículo, marca ou modelo"
                    aria-label="Buscar veículo, marca ou modelo">
         </form>
+        <a class="site-nav__link site-nav__link--accent" th:unless="${usuarioLogado}"
+        th:href="@{/login}">Login</a>
+
+        <a class="avatar avatar--sm" th:if="${usuarioLogado}" th:href="@{/perfil}"
+        th:title="${usuarioLogado.nome}" aria-label="Meu perfil">
+            <span class="avatar__initials"
+                th:text="${#strings.isEmpty(usuarioLogado.nome) ? '?' : #strings.toUpperCase(#strings.substring(usuarioLogado.nome, 0, 1))}">?</span>
+        </a>
+
     </div>
 
     <nav class="site-nav" aria-label="Principal">

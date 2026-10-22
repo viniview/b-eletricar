@@ -6,10 +6,30 @@
 </head>
 <body>
     <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+        <link rel="stylesheet" th:href="@{/css/perfil.css}">
+
         <h1 class="page__title">Perfil</h1>
         <p class="page__lead">Dados da sua conta.</p>
+        <p class="auth__msg auth__msg--ok" th:if="${param.senhaDefinida}">
+            Senha salva. Agora você pode entrar com e-mail e senha.
+        </p>
 
         <section class="profile" th:if="${usuario != null}">
+            <div class="profile__security" th:if="${proprio}">
+                <p class="auth__msg auth__msg--error" th:unless="${temSenha}">
+                    Você ainda não tem uma senha. Defina uma para também entrar com e-mail e senha.
+                </p>
+
+                <div class="profile__actions">
+                    <a class="btn" th:href="@{/definir-senha}"
+                    th:text="${temSenha} ? 'Alterar senha' : 'Definir senha'">Definir senha</a>
+
+                    <form th:action="@{/logout}" method="post">
+                        <button class="btn " type="submit">Sair</button>
+                    </form>
+                </div>
+            </div>
             <table class="profile__table">
                 <thead>
                     <tr>

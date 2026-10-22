@@ -1,0 +1,9 @@
+.profile__security { margin-bottom: 1.5rem; }
+
+.profile__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  /* um botão em cada ponta */
+    flex-wrap: wrap;                 /* no mobile, quebra de linha se não couber */
+    gap: .75rem;
+}

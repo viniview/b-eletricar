@@ -1,0 +1,26 @@
+<!-- templates/fragments/auth.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Caixa centralizada: título, texto de apoio e conteúdo (o <form>) -->
+<section class="auth__card" th:fragment="card(title, lead, content)">
+    <h1 class="auth__title" th:text="${title}">Título</h1>
+    <p class="auth__lead" th:if="${lead != null}" th:text="${lead}">Texto de apoio</p>
+    <th:block th:replace="${content}"></th:block>
+</section>
+
+<!-- Campo: label + input, um por linha -->
+<div class="field" th:fragment="field(id, name, label, type, autocomplete, min, max)">
+    <label class="field__label" th:for="${id}" th:text="${label}">Rótulo</label>
+    <input class="field__input" th:id="${id}" th:name="${name}"
+           th:type="${type}" th:autocomplete="${autocomplete}"
+           th:minlength="${min}" th:maxlength="${max}" required>
+</div>
+
+<!-- Mensagem: kind = 'ok' ou 'error' -->
+<p class="auth__msg" th:fragment="message(kind, text)"
+   th:classappend="'auth__msg--' + ${kind}" th:text="${text}" role="status">Mensagem</p>
+
+</body>
+</html>

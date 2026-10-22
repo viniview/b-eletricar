@@ -1,6 +1,5 @@
 package com.example.b_eletricar.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -10,14 +9,19 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.ui.Model;
 
 import com.example.b_eletricar.database.model.Usuario;
+import com.example.b_eletricar.database.model.enums.Roles;
 import com.example.b_eletricar.database.repository.UsuarioRepository;
-import com.example.b_eletricar.security.UsuarioPrincipal;
+import com.example.b_eletricar.security.UsuarioLogado;
+
 
 @Controller
 public class LoginController {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+private final UsuarioRepository usuarioRepository;
+
+public LoginController(UsuarioRepository usuarioRepository) {
+    this.usuarioRepository = usuarioRepository;
+}
 
     @GetMapping("/login")
     public String login() {
@@ -25,23 +29,27 @@ public class LoginController {
     }
 
     @GetMapping("/perfil")
-    public String perfil(@AuthenticationPrincipal UsuarioPrincipal principal) {
+    public String perfil(@AuthenticationPrincipal UsuarioLogado principal) {
         return "redirect:/perfil/" + principal.getUsuario().getId();
     }
     @GetMapping("/perfil/{id}")
-    public String redirecionarPerfilComId(@PathVariable Long id,
-                                         @AuthenticationPrincipal UsuarioPrincipal principal,
-                                         Model model) {
-        boolean dono = principal.getUsuario().getId().equals(id);
-        boolean admin = principal.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    public String perfil(@PathVariable Long id,
+                        @AuthenticationPrincipal UsuarioLogado principal,
+                        Model model) {
+        Usuario logado = principal.getUsuario();
+        boolean dono = logado.getId().equals(id);
+        boolean admin = logado.getRole() == Roles.ADMIN;
 
         if (!dono && !admin) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         model.addAttribute("usuario", usuario);
+        model.addAttribute("proprio", dono);
+        model.addAttribute("temSenha", usuario.getSenha() != null);
         return "perfil";
     }
 }

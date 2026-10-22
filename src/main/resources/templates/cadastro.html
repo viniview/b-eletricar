@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Cadastro</title>
+</head>
+<body>
+    <main class="page container auth">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+
+        <h1 class="page__title">Criar conta</h1>
+        <p class="auth__msg auth__msg--error" th:if="${erro}" th:text="${erro}"></p>
+
+        <form class="auth__form" th:action="@{/cadastro}" th:object="${form}" method="post">
+            <label class="auth__label" for="nome">Nome</label>
+            <input class="auth__input" id="nome" type="text" th:field="*{nome}"
+                   autocomplete="name" maxlength="100" required autofocus>
+            <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('nome')}"
+               th:errors="*{nome}"></p>
+
+            <label class="auth__label" for="email">E-mail</label>
+            <input class="auth__input" id="email" type="email" th:field="*{email}"
+                   autocomplete="email" required>
+            <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('email')}"
+               th:errors="*{email}"></p>
+
+            <label class="auth__label" for="senha">Senha</label>
+            <input class="auth__input" id="senha" type="password" th:field="*{senha}"
+                   autocomplete="new-password" minlength="8" maxlength="72" required>
+            <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('senha')}"
+               th:errors="*{senha}"></p>
+
+            <button class="btn btn--block" type="submit">Criar conta</button>
+        </form>
+
+        <a class="btn btn--outline btn--block" th:href="@{/login}">Já tenho conta</a>
+        <a class="btn btn--outline btn--block" th:href="@{/oauth2/authorization/google}">Cadastrar com Google</a>
+    </main>
+</body>
+</html>

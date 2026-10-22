@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Senha</title>
+</head>
+<body>
+    <main class="page container auth">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+
+        <h1 class="page__title" th:text="${temSenha} ? 'Alterar senha' : 'Definir senha'">Definir senha</h1>
+        <p class="page__lead" th:unless="${temSenha}">
+            Com uma senha você também poderá entrar usando e-mail e senha.
+        </p>
+
+        <p class="auth__msg auth__msg--error" th:if="${erro}" th:text="${erro}"></p>
+
+        <form class="auth__form" th:action="@{/definir-senha}" method="post">
+            <th:block th:if="${exigeAtual}">
+                <label class="auth__label" for="senhaAtual">Senha atual</label>
+                <input class="auth__input" id="senhaAtual" name="senhaAtual" type="password"
+                       autocomplete="current-password" required>
+            </th:block>
+
+            <label class="auth__label" for="senha">Nova senha</label>
+            <input class="auth__input" id="senha" name="senha" type="password"
+                   autocomplete="new-password" minlength="8" maxlength="72" required>
+
+            <label class="auth__label" for="confirmacao">Confirmar nova senha</label>
+            <input class="auth__input" id="confirmacao" name="confirmacao" type="password"
+                   autocomplete="new-password" minlength="8" maxlength="72" required>
+
+            <button class="btn btn--block" type="submit">Salvar senha</button>
+        </form>
+
+        <a class="btn btn--outline btn--block" th:href="@{/perfil}">Voltar ao perfil</a>
+    </main>
+</body>
+</html>
