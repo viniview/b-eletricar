@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Administração</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <h1 class="page__title">Painel administrativo</h1>
+        <p class="page__lead">Gerencie veículos, fornecedores, usuários e comentários.</p>
+
+        <ul class="admin-cards">
+            <li class="admin-card">
+                <a class="admin-card__link" th:href="@{/admin/veiculos}">
+                    <span class="admin-card__title">Veículos</span>
+                    <span class="admin-card__hint">em breve</span>
+                </a>
+            </li>
+            <li class="admin-card">
+                <a class="admin-card__link" th:href="@{/admin/fornecedores}">
+                    <span class="admin-card__title">Fornecedores</span>
+                    <span class="admin-card__hint">em breve</span>
+                </a>
+            </li>
+            <li class="admin-card">
+                <a class="admin-card__link" th:href="@{/admin/usuarios}">
+                    <span class="admin-card__title">Usuários</span>
+                    <span class="admin-card__hint">em breve</span>
+                </a>
+            </li>
+            <li class="admin-card">
+                <a class="admin-card__link" th:href="@{/admin/comentarios}">
+                    <span class="admin-card__title">Comentários</span>
+                    <span class="admin-card__hint">em breve</span>
+                </a>
+            </li>
+        </ul>
+    </main>
+</body>
+</html>

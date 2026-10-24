@@ -48,6 +48,7 @@ public class SecurityConfig {
                                  "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .logout(logout -> logout

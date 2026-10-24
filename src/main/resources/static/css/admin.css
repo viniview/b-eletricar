@@ -1,0 +1,92 @@
+/* ---------- Menu do painel admin ---------- */
+.admin-nav { margin-bottom: 2rem; }
+
+.admin-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .25rem;
+    margin: 0;
+    padding: .35rem;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+}
+
+.admin-nav__link {
+    display: block;
+    padding: .45rem 1rem;
+    border-radius: var(--radius-pill);
+    color: var(--ink-soft);
+    font-size: .92rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background .2s, color .2s;
+}
+
+.admin-nav__link:hover,
+.admin-nav__link.is-active {
+    background: var(--volt-tint);
+    color: var(--ink);
+}
+
+/* ---------- Cards do painel ---------- */
+.admin-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.admin-card__link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5rem;
+    height: 100%;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+
+.admin-card__link:hover {
+    border-color: var(--volt);
+    box-shadow: 0 8px 24px rgba(12, 26, 36, .06);
+    transform: translateY(-2px);
+}
+
+.admin-card__link:focus-visible {
+    outline: none;
+    border-color: var(--volt);
+    box-shadow: 0 0 0 4px rgba(0, 195, 137, .2);
+}
+
+.admin-card__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.admin-card__hint {
+    padding: .15rem .6rem;
+    border-radius: var(--radius-pill);
+    background: var(--volt-tint);
+    color: var(--volt-deep);
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+    .admin-nav__list { border-radius: 14px; }
+}
