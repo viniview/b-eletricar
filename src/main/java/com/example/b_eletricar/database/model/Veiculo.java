@@ -28,5 +28,5 @@ public class Veiculo {
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
-    private MarcaVeiculo fornecedor;
+    private Fornecedor fornecedor;
 }

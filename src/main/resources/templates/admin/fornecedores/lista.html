@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Fornecedores</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <div class="admin-toolbar">
+            <h1 class="page__title">Fornecedores</h1>
+            <a class="btn" th:href="@{/admin/fornecedores/novo}">Novo fornecedor</a>
+        </div>
+
+        <p class="admin-msg admin-msg--ok" th:if="${sucesso}" th:text="${sucesso}">Mensagem de sucesso.</p>
+        <p class="admin-msg admin-msg--erro" th:if="${erro}" th:text="${erro}">Mensagem de erro.</p>
+
+        <div class="admin-table-wrap" th:if="${!#lists.isEmpty(fornecedores)}">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Site</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="f : ${fornecedores}">
+                        <td th:text="${f.nome}">Nome</td>
+                        <td th:text="${f.emailContato}">e-mail@exemplo.com</td>
+                        <td>
+                            <a class="admin-table__site" th:if="${f.site}" th:href="${f.site}"
+                               th:text="${f.site}" target="_blank" rel="noopener noreferrer">https://</a>
+                            <span class="admin-table__muted" th:unless="${f.site}">&mdash;</span>
+                        </td>
+                        <td class="admin-table__actions">
+                            <a class="btn btn--sm btn--outline"
+                               th:href="@{/admin/fornecedores/{id}/editar(id=${f.id})}">Editar</a>
+                            <form th:action="@{/admin/fornecedores/{id}/excluir(id=${f.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('Excluir este fornecedor?')">
+                                <button class="btn btn--sm btn--danger" type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="admin-empty" th:if="${#lists.isEmpty(fornecedores)}">
+            <p>Nenhum fornecedor cadastrado.</p>
+            <a class="btn" th:href="@{/admin/fornecedores/novo}">Cadastrar fornecedor</a>
+        </div>
+    </main>
+</body>
+</html>

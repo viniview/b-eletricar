@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title th:text="${modo == 'editar'} ? 'Eletrocar | Editar fornecedor' : 'Eletrocar | Novo fornecedor'">Eletrocar | Novo fornecedor</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <h1 class="page__title"
+            th:text="${modo == 'editar'} ? 'Editar fornecedor' : 'Novo fornecedor'">Novo fornecedor</h1>
+
+        <p class="auth__msg auth__msg--error" th:if="${erro}" th:text="${erro}">Erro de regra de negócio.</p>
+
+        <div class="admin-form">
+            <form class="auth__form" th:object="${form}" method="post"
+                  th:action="${modo == 'editar'} ? @{/admin/fornecedores/{id}(id=${fornecedorId})}
+                                                  : @{/admin/fornecedores}">
+
+                <div class="field">
+                    <label class="field__label" for="nome">Nome</label>
+                    <input class="field__input" id="nome" type="text" th:field="*{nome}"
+                           autocomplete="organization" maxlength="100" required autofocus>
+                    <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('nome')}"
+                       th:errors="*{nome}"></p>
+                </div>
+
+                <div class="field">
+                    <label class="field__label" for="emailContato">E-mail de contato</label>
+                    <input class="field__input" id="emailContato" type="email" th:field="*{emailContato}"
+                           autocomplete="email" maxlength="100">
+                    <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('emailContato')}"
+                       th:errors="*{emailContato}"></p>
+                </div>
+
+                <div class="field">
+                    <label class="field__label" for="site">Site</label>
+                    <input class="field__input" id="site" type="url" th:field="*{site}"
+                           placeholder="https://..." maxlength="255">
+                    <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('site')}"
+                       th:errors="*{site}"></p>
+                </div>
+
+                <div class="admin-form__actions">
+                    <button class="btn" type="submit">Salvar</button>
+                    <a class="btn btn--outline" th:href="@{/admin/fornecedores}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
