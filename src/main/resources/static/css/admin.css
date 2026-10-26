@@ -91,7 +91,7 @@
     .admin-nav__list { border-radius: 14px; }
 }
 
-/* ---------- Cores de erro (espelho do auth.css; esta página não carrega auth.css) ---------- */
+/* ---------- Cores de erro (espelho do auth.css; esta pï¿½gina nï¿½o carrega auth.css) ---------- */
 :root {
     --danger: #c0392b;
     --danger-tint: #fdecea;
@@ -185,7 +185,7 @@
     font-size: 1.05rem;
 }
 
-/* ---------- Botão perigo (mesmo padrão das variantes .btn--* do style.css) ---------- */
+/* ---------- Botï¿½o perigo (mesmo padrï¿½o das variantes .btn--* do style.css) ---------- */
 .btn--danger {
     --btn-bg: transparent;
     --btn-ink: var(--danger);
@@ -194,7 +194,7 @@
     --btn-ink-hover: #fff;
 }
 
-/* ---------- Formulário do admin ---------- */
+/* ---------- Formulï¿½rio do admin ---------- */
 .admin-form {
     max-width: 640px;
     padding: 2rem;
@@ -209,3 +209,56 @@
     gap: .75rem;
     margin-top: .5rem;
 }
+
+/* ---------- Grupos de campos do formulÃ¡rio ---------- */
+.admin-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 1.25rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+}
+
+.admin-form__group:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.admin-form__group-title {
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--ink);
+}
+
+/* ---------- Select do formulÃ¡rio ---------- */
+.field__input--select {
+    appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23566873' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .9rem center;
+}
+
+/* ---------- Aviso (ex.: sem fornecedores) ---------- */
+.admin-warn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0 0 1.25rem;
+    padding: .85rem 1rem;
+    background: var(--bg);
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    color: var(--ink-soft);
+    font-size: .92rem;
+}
+
+.admin-warn p { margin: 0; }

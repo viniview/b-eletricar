@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title th:text="${modo == 'editar'} ? 'Eletrocar | Editar veículo' : 'Eletrocar | Novo veículo'">Eletrocar | Novo veículo</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <h1 class="page__title"
+            th:text="${modo == 'editar'} ? 'Editar veículo' : 'Novo veículo'">Novo veículo</h1>
+
+        <p class="auth__msg auth__msg--error" th:if="${erro}" th:text="${erro}">Erro de regra de negócio.</p>
+
+        <div class="admin-warn" th:if="${#lists.isEmpty(fornecedores)}">
+            <p>Cadastre um fornecedor antes de cadastrar veículos</p>
+            <a class="btn btn--sm btn--outline" th:href="@{/admin/fornecedores/novo}">Cadastrar fornecedor</a>
+        </div>
+
+        <div class="admin-form">
+            <form class="auth__form" th:object="${form}" method="post"
+                  th:action="${modo == 'editar'} ? @{/admin/veiculos/{id}(id=${veiculoId})}
+                                                  : @{/admin/veiculos}">
+
+                <fieldset class="admin-form__group">
+                    <legend class="admin-form__group-title">Identificação</legend>
+
+                    <div class="field">
+                        <label class="field__label" for="marca">Marca</label>
+                        <input class="field__input" id="marca" type="text" th:field="*{marca}"
+                               maxlength="50" required autofocus>
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('marca')}"
+                           th:errors="*{marca}"></p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="modelo">Modelo</label>
+                        <input class="field__input" id="modelo" type="text" th:field="*{modelo}"
+                               maxlength="50" required>
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('modelo')}"
+                           th:errors="*{modelo}"></p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="carroceria">Carroceria</label>
+                        <input class="field__input" id="carroceria" type="text" th:field="*{carroceria}"
+                               list="carrocerias" maxlength="50" placeholder="Ex.: SUV">
+                        <datalist id="carrocerias">
+                            <option value="SUV"></option>
+                            <option value="Sedan"></option>
+                            <option value="Hatch"></option>
+                            <option value="Crossover"></option>
+                            <option value="Picape"></option>
+                            <option value="Utilitário"></option>
+                        </datalist>
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('carroceria')}"
+                           th:errors="*{carroceria}"></p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="preco">Preço (R$)</label>
+                        <input class="field__input" id="preco" type="number" th:field="*{preco}"
+                               step="0.01" min="0" required>
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('preco')}"
+                           th:errors="*{preco}"></p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="fornecedorId">Fornecedor</label>
+                        <select class="field__input field__input--select" id="fornecedorId"
+                                th:field="*{fornecedorId}" required>
+                            <option value="" disabled>Selecione...</option>
+                            <option th:each="f : ${fornecedores}" th:value="${f.id}"
+                                    th:text="${f.nome}">Fornecedor</option>
+                        </select>
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('fornecedorId')}"
+                           th:errors="*{fornecedorId}"></p>
+                    </div>
+                </fieldset>
+
+                <fieldset class="admin-form__group">
+                    <legend class="admin-form__group-title">Especificações técnicas</legend>
+
+                    <div class="field">
+                        <label class="field__label" for="autonomiaKm">Autonomia (km)</label>
+                        <input class="field__input" id="autonomiaKm" type="number" th:field="*{autonomiaKm}"
+                               required>
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('autonomiaKm')}"
+                           th:errors="*{autonomiaKm}"></p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="capacidadeBateriaKwh">Capacidade da bateria (kWh)</label>
+                        <input class="field__input" id="capacidadeBateriaKwh" type="number"
+                               th:field="*{capacidadeBateriaKwh}" step="0.1" required>
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('capacidadeBateriaKwh')}"
+                           th:errors="*{capacidadeBateriaKwh}"></p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="potenciaCv">Potência (cv)</label>
+                        <input class="field__input" id="potenciaCv" type="number" th:field="*{potenciaCv}">
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('potenciaCv')}"
+                           th:errors="*{potenciaCv}"></p>
+                    </div>
+
+                    <div class="field">
+                        <label class="field__label" for="tempoCargaHoras">Tempo de carga (horas)</label>
+                        <input class="field__input" id="tempoCargaHoras" type="number"
+                               th:field="*{tempoCargaHoras}" step="0.1">
+                        <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('tempoCargaHoras')}"
+                           th:errors="*{tempoCargaHoras}"></p>
+                    </div>
+                </fieldset>
+
+                <div class="admin-form__actions">
+                    <button class="btn" type="submit" th:disabled="${#lists.isEmpty(fornecedores)}">Salvar</button>
+                    <a class="btn btn--outline" th:href="@{/admin/veiculos}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,9 +1,12 @@
 package com.example.b_eletricar.database.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "veiculo")
+@Getter @Setter
 public class Veiculo {
 
     @Id
