@@ -262,3 +262,74 @@
 }
 
 .admin-warn p { margin: 0; }
+
+/* ---------- Selos de perfil e de "Você" ---------- */
+.admin-badge {
+    display: inline-block;
+    padding: .15rem .6rem;
+    border-radius: var(--radius-pill);
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.admin-badge--admin {
+    background: var(--volt-tint);
+    color: var(--volt-deep);
+}
+
+.admin-badge--user {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+}
+
+.admin-badge--voce {
+    background: transparent;
+    border: 1px solid var(--volt);
+    color: var(--volt-deep);
+}
+
+/* ---------- Bloco informativo somente leitura (form do usuário) ---------- */
+.admin-info {
+    margin: 0 0 1.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.admin-info p {
+    margin: 0 0 .35rem;
+    color: var(--ink-soft);
+    font-size: .92rem;
+}
+
+.admin-info p:last-child { margin-bottom: 0; }
+
+.admin-info strong { color: var(--ink); }
+
+/* ---------- Filtro da listagem de comentários ---------- */
+.admin-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
+}
+
+.admin-filter label { margin: 0; }
+
+/* ---------- Paginação ---------- */
+.admin-pagination {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.25rem;
+}
+
+.admin-pagination__info {
+    color: var(--ink-soft);
+    font-size: .92rem;
+}

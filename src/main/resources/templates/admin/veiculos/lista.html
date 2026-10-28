@@ -41,7 +41,7 @@
                         </td>
                         <td>
                             <span th:if="${v.preco != null}"
-                                  th:text="|R$ ${#numbers.formatDecimal(v.preco, 1, 'COMMA', 2)}|">R$ 0,00</span>
+                                  th:text="|R$ ${#numbers.formatDecimal(v.preco, 1, 2, 'COMMA')}|">R$ 0,00</span>
                             <span class="admin-table__muted" th:unless="${v.preco != null}">&mdash;</span>
                         </td>
                         <td>

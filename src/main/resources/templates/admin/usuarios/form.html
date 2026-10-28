@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Editar usuário</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/auth.css}">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <h1 class="page__title">Editar usuário</h1>
+
+        <p class="auth__msg auth__msg--error" th:if="${erro}" th:text="${erro}">Erro de regra de negócio.</p>
+
+        <div class="admin-info">
+            <p><strong>E-mail:</strong> <span th:text="${usuario.email}">e-mail@exemplo.com</span></p>
+            <p><strong>Origem da conta:</strong>
+                <span th:if="${usuario.senha != null and usuario.subId == null}">E-mail e senha</span>
+                <span th:if="${usuario.senha == null and usuario.subId != null}">Google</span>
+                <span th:if="${usuario.senha != null and usuario.subId != null}">Google + senha</span>
+                <span th:if="${usuario.senha == null and usuario.subId == null}">&mdash;</span>
+            </p>
+        </div>
+
+        <div class="admin-form">
+            <form class="auth__form" th:object="${form}" method="post"
+                  th:action="@{/admin/usuarios/{id}(id=${usuarioId})}">
+
+                <div class="field">
+                    <label class="field__label" for="nome">Nome</label>
+                    <input class="field__input" id="nome" type="text" th:field="*{nome}"
+                           autocomplete="name" maxlength="100" required autofocus>
+                    <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('nome')}"
+                       th:errors="*{nome}"></p>
+                </div>
+
+                <div class="field" th:unless="${proprio}">
+                    <label class="field__label" for="role">Perfil</label>
+                    <select class="field__input field__input--select" id="role" th:field="*{role}">
+                        <option value="ADMIN">Administrador</option>
+                        <option value="USER">Usuário</option>
+                    </select>
+                    <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('role')}"
+                       th:errors="*{role}"></p>
+                </div>
+
+                <div class="field" th:if="${proprio}">
+                    <label class="field__label" for="role">Perfil</label>
+                    <select class="field__input field__input--select" id="role" th:field="*{role}" disabled>
+                        <option value="ADMIN">Administrador</option>
+                        <option value="USER">Usuário</option>
+                    </select>
+                    <input type="hidden" th:field="*{role}">
+                    <p class="auth__msg auth__msg--error">Voc&ecirc; n&atilde;o pode alterar o seu pr&oacute;prio perfil.</p>
+                </div>
+
+                <div class="admin-form__actions">
+                    <button class="btn" type="submit">Salvar</button>
+                    <a class="btn btn--outline" th:href="@{/admin/usuarios}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

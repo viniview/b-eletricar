@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.b_eletricar.database.model.Fornecedor;
 import com.example.b_eletricar.database.model.Veiculo;
+import com.example.b_eletricar.database.repository.ComentarioRepository;
 import com.example.b_eletricar.database.repository.FornecedorRepository;
 import com.example.b_eletricar.database.repository.VeiculoRepository;
 import com.example.b_eletricar.dto.VeiculoForm;
@@ -19,10 +20,13 @@ public class AdminVeiculoService {
 
     private final VeiculoRepository veiculoRepository;
     private final FornecedorRepository fornecedorRepository;
+    private final ComentarioRepository comentarioRepository;
 
-    public AdminVeiculoService(VeiculoRepository veiculoRepository, FornecedorRepository fornecedorRepository) {
+    public AdminVeiculoService(VeiculoRepository veiculoRepository, FornecedorRepository fornecedorRepository,
+            ComentarioRepository comentarioRepository) {
         this.veiculoRepository = veiculoRepository;
         this.fornecedorRepository = fornecedorRepository;
+        this.comentarioRepository = comentarioRepository;
     }
 
     public List<Veiculo> listar() {
@@ -65,6 +69,7 @@ public class AdminVeiculoService {
     @Transactional
     public void excluir(Long id) {
         Veiculo v = buscarPorId(id);
+        comentarioRepository.deleteByVeiculoId(id);
         veiculoRepository.delete(v);
     }
 

@@ -3,6 +3,7 @@ package com.example.b_eletricar.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.b_eletricar.database.model.Fornecedor;
 import com.example.b_eletricar.database.model.Veiculo;
+import com.example.b_eletricar.database.repository.ComentarioRepository;
 import com.example.b_eletricar.database.repository.FornecedorRepository;
 import com.example.b_eletricar.database.repository.VeiculoRepository;
 import com.example.b_eletricar.dto.VeiculoForm;
@@ -31,6 +34,9 @@ class AdminVeiculoServiceTest {
 
     @Mock
     private FornecedorRepository fornecedorRepository;
+
+    @Mock
+    private ComentarioRepository comentarioRepository;
 
     @InjectMocks
     private AdminVeiculoService service;
@@ -153,6 +159,31 @@ class AdminVeiculoServiceTest {
         service.excluir(1L);
 
         verify(veiculoRepository).delete(existente);
+    }
+
+    @Test
+    void excluirChamaDeleteDeComentariosAntesDeRemoverVeiculo() {
+        Veiculo existente = new Veiculo();
+        existente.setId(1L);
+
+        when(veiculoRepository.findById(1L)).thenReturn(Optional.of(existente));
+
+        service.excluir(1L);
+
+        InOrder inOrder = inOrder(comentarioRepository, veiculoRepository);
+        inOrder.verify(comentarioRepository).deleteByVeiculoId(1L);
+        inOrder.verify(veiculoRepository).delete(existente);
+    }
+
+    @Test
+    void excluirInexistenteNaoChamaDeleteDeComentarios() {
+        when(veiculoRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.excluir(99L))
+                .isInstanceOfSatisfying(ResponseStatusException.class,
+                        ex -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
+
+        verify(comentarioRepository, never()).deleteByVeiculoId(any(Long.class));
     }
 
 }
