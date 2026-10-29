@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav class="admin-nav" th:fragment="menu" aria-label="Administração">
+    <ul class="admin-nav__list">
+        <li><a class="admin-nav__link" th:href="@{/admin}">Painel</a></li>
+        <li><a class="admin-nav__link" th:href="@{/admin/veiculos}">Veículos</a></li>
+        <li><a class="admin-nav__link" th:href="@{/admin/fornecedores}">Fornecedores</a></li>
+        <li><a class="admin-nav__link" th:href="@{/admin/usuarios}">Usuários</a></li>
+        <li><a class="admin-nav__link" th:href="@{/admin/comentarios}">Comentários</a></li>
+    </ul>
+</nav>
+
+</body>
+</html>

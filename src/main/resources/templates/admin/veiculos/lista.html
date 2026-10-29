@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Veículos</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <div class="admin-toolbar">
+            <h1 class="page__title">Veículos</h1>
+            <a class="btn" th:href="@{/admin/veiculos/novo}">Novo veículo</a>
+        </div>
+
+        <p class="admin-msg admin-msg--ok" th:if="${sucesso}" th:text="${sucesso}">Mensagem de sucesso.</p>
+        <p class="admin-msg admin-msg--erro" th:if="${erro}" th:text="${erro}">Mensagem de erro.</p>
+
+        <div class="admin-table-wrap" th:if="${!#lists.isEmpty(veiculos)}">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col">Carroceria</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Autonomia (km)</th>
+                        <th scope="col">Bateria (kWh)</th>
+                        <th scope="col">Fornecedor</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="v : ${veiculos}">
+                        <td th:text="${v.marca}">Marca</td>
+                        <td th:text="${v.modelo}">Modelo</td>
+                        <td>
+                            <span th:if="${v.carroceria}" th:text="${v.carroceria}">Carroceria</span>
+                            <span class="admin-table__muted" th:unless="${v.carroceria}">&mdash;</span>
+                        </td>
+                        <td>
+                            <span th:if="${v.preco != null}"
+                                  th:text="|R$ ${#numbers.formatDecimal(v.preco, 1, 2, 'COMMA')}|">R$ 0,00</span>
+                            <span class="admin-table__muted" th:unless="${v.preco != null}">&mdash;</span>
+                        </td>
+                        <td>
+                            <span th:if="${v.autonomiaKm != null}" th:text="${v.autonomiaKm}">0</span>
+                            <span class="admin-table__muted" th:unless="${v.autonomiaKm != null}">&mdash;</span>
+                        </td>
+                        <td>
+                            <span th:if="${v.capacidadeBateriaKwh != null}" th:text="${v.capacidadeBateriaKwh}">0</span>
+                            <span class="admin-table__muted" th:unless="${v.capacidadeBateriaKwh != null}">&mdash;</span>
+                        </td>
+                        <td>
+                            <span th:if="${v.fornecedor}" th:text="${v.fornecedor.nome}">Fornecedor</span>
+                            <span class="admin-table__muted" th:unless="${v.fornecedor}">&mdash;</span>
+                        </td>
+                        <td class="admin-table__actions">
+                            <a class="btn btn--sm btn--outline"
+                               th:href="@{/admin/veiculos/{id}/editar(id=${v.id})}">Editar</a>
+                            <form th:action="@{/admin/veiculos/{id}/excluir(id=${v.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('Excluir este veículo?')">
+                                <button class="btn btn--sm btn--danger" type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="admin-empty" th:if="${#lists.isEmpty(veiculos)}">
+            <p>Nenhum veículo cadastrado.</p>
+            <a class="btn" th:href="@{/admin/veiculos/novo}">Cadastrar veículo</a>
+        </div>
+    </main>
+</body>
+</html>

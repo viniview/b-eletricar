@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Usuários</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <div class="admin-toolbar">
+            <h1 class="page__title">Usuários</h1>
+        </div>
+
+        <p class="admin-msg admin-msg--ok" th:if="${sucesso}" th:text="${sucesso}">Mensagem de sucesso.</p>
+        <p class="admin-msg admin-msg--erro" th:if="${erro}" th:text="${erro}">Mensagem de erro.</p>
+
+        <div class="admin-table-wrap" th:if="${!#lists.isEmpty(usuarios)}">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Perfil</th>
+                        <th scope="col">Origem da conta</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="u : ${usuarios}">
+                        <td th:text="${u.nome}">Nome</td>
+                        <td th:text="${u.email}">e-mail@exemplo.com</td>
+                        <td>
+                            <span class="admin-badge admin-badge--admin"
+                                  th:if="${u.role != null and u.role.name() == 'ADMIN'}">ADMIN</span>
+                            <span class="admin-badge admin-badge--user"
+                                  th:if="${u.role != null and u.role.name() == 'USER'}">USER</span>
+                            <span class="admin-table__muted" th:if="${u.role == null}">&mdash;</span>
+                        </td>
+                        <td>
+                            <span th:if="${u.senha != null and u.subId == null}">E-mail e senha</span>
+                            <span th:if="${u.senha == null and u.subId != null}">Google</span>
+                            <span th:if="${u.senha != null and u.subId != null}">Google + senha</span>
+                            <span class="admin-table__muted"
+                                  th:if="${u.senha == null and u.subId == null}">&mdash;</span>
+                        </td>
+                        <td class="admin-table__actions">
+                            <a class="btn btn--sm btn--outline"
+                               th:href="@{/perfil/{id}(id=${u.id})}">Ver perfil</a>
+                            <a class="btn btn--sm btn--outline"
+                               th:href="@{/admin/usuarios/{id}/editar(id=${u.id})}">Editar</a>
+                            <span class="admin-badge admin-badge--voce" th:if="${u.id == idLogado}">Voc&ecirc;</span>
+                            <form th:unless="${u.id == idLogado}"
+                                  th:action="@{/admin/usuarios/{id}/excluir(id=${u.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('Excluir este usuário?')">
+                                <button class="btn btn--sm btn--danger" type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="admin-empty" th:if="${#lists.isEmpty(usuarios)}">
+            <p>Nenhum usuário cadastrado.</p>
+        </div>
+    </main>
+</body>
+</html>

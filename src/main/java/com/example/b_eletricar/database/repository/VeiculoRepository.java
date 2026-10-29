@@ -11,5 +11,7 @@ import java.util.List;
 public interface VeiculoRepository extends JpaRepository<Veiculo, Long>, JpaSpecificationExecutor<Veiculo> {
 
     List<Veiculo> findByModeloContainingIgnoreCase(String modelo);
+
+    boolean existsByFornecedorId(Long fornecedorId);
     
 }
