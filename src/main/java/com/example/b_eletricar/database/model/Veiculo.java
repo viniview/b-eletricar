@@ -1,9 +1,12 @@
 package com.example.b_eletricar.database.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "veiculo")
+@Getter @Setter
 public class Veiculo {
 
     @Id
@@ -25,6 +28,9 @@ public class Veiculo {
     private Double capacidadeBateriaKwh;
     private Integer potenciaCv;
     private Double tempoCargaHoras;
+
+
+    private String fotoUrl;
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
