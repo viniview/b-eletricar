@@ -9,14 +9,16 @@
             <span class="brand__name">eletrocar</span>
         </a>
 
-        <form class="search" role="search" th:action="@{/busca}" method="get">
-            <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>
-            </svg>
-            <input class="search__input" type="search" name="q"
-                   placeholder="Buscar veículo, marca ou modelo"
-                   aria-label="Buscar veículo, marca ou modelo">
+        <form class="search" role="search"
+            th:action="@{/veiculos/listagem}" method="get">
+
+            <input class="search__input" type="search"
+                name="palavraChave"
+                placeholder="Buscar veículo, marca ou modelo"
+                aria-label="Buscar veículo, marca ou modelo">
         </form>
+
+        
         <a class="site-nav__link site-nav__link--accent" th:unless="${usuarioLogado}"
         th:href="@{/login}">Login</a>
 
