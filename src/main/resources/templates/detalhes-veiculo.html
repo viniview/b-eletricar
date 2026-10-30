@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalhes do veículo | B-Eletricar</title>
+</head>
+<body>
+<main>
+    <a class="back" th:href="@{/veiculos/listagem}">
+        Voltar para veículos
+    </a>
+    <article class="card" th:object="${veiculo}">
+        <section>
+            <p class="muted" th:text="*{marca}">Marca</p>
+            <h1 th:text="*{modelo}">Modelo do veículo</h1>
+            <p class="preco"
+               th:text="*{preco != null ? #numbers.formatCurrency(preco) : 'Preço não informado'}">
+                R$ 0,00
+            </p>
+            <h2>Especificações do veículo</h2>
+            <dl>
+                <div>
+                    <dt>Carroceria</dt>
+                    <dd th:text="*{carroceria != null ? carroceria : 'Não informada'}">
+                        SUV
+                    </dd>
+                </div>
+                <div>
+                    <dt>Autonomia</dt>
+                    <dd>
+                        <span th:text="*{autonomiaKm != null ? autonomiaKm : 'Não informada'}">
+                            0
+                        </span>
+                        <span th:if="*{autonomiaKm != null}"> km</span>
+                    </dd>
+                </div>
+                <div>
+                    <dt>Capacidade da bateria</dt>
+                    <dd>
+                        <span th:text="*{capacidadeBateriaKwh != null ? capacidadeBateriaKwh : 'Não informada'}">
+                            0
+                        </span>
+                        <span th:if="*{capacidadeBateriaKwh != null}"> kWh</span>
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Potência</dt>
+                    <dd>
+                        <span th:text="*{potenciaCv != null ? potenciaCv : 'Não informada'}">
+                            0
+                        </span>
+                        <span th:if="*{potenciaCv != null}"> cv</span>
+                    </dd>
+                </div>
+                <div>
+                    <dt>Tempo de recarga</dt>
+                    <dd>
+                        <span th:text="*{tempoCargaHoras != null ? tempoCargaHoras : 'Não informado'}">
+                            0
+                        </span>
+                        <span th:if="*{tempoCargaHoras != null}"> horas</span>
+                    </dd>
+                </div>
+            </dl>
+            <h2>Fornecedor</h2>
+            <p th:if="*{fornecedor != null}"
+               th:text="*{fornecedor.nome}">
+                Nome do fornecedor
+            </p>
+            <p th:unless="*{fornecedor != null}">
+                Fornecedor não informado.
+            </p>
+            <a class="botao"
+               th:if="*{fornecedor != null and fornecedor.site != null and !#strings.isEmpty(fornecedor.site)}"
+               th:href="@{/veiculos/{id}/fornecedor(id=*{id})}"
+               target="_blank">
+                Visitar site do fornecedor
+            </a>
+        </section>
+    </article>
+</main>
+</body>
+</html>
