@@ -1,8 +1,15 @@
 package com.example.b_eletricar.database.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "veiculo")
 public class Veiculo {
 
@@ -28,5 +35,5 @@ public class Veiculo {
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
-    private MarcaVeiculo fornecedor;
+    private Fornecedor fornecedor;
 }
