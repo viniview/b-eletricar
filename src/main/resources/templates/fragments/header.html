@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
 <header class="site-header" th:fragment="header">
@@ -17,8 +18,8 @@
                 placeholder="Buscar veículo, marca ou modelo"
                 aria-label="Buscar veículo, marca ou modelo">
         </form>
+        <a class="site-nav__link" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Administração</a>
 
-        
         <a class="site-nav__link site-nav__link--accent" th:unless="${usuarioLogado}"
         th:href="@{/login}">Login</a>
 

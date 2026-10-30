@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Eletrocar | Comentários</title>
+</head>
+<body>
+    <main class="page container">
+        <link rel="stylesheet" th:href="@{/css/admin.css}">
+        <nav th:replace="~{admin/fragments/menu :: menu}"></nav>
+
+        <div class="admin-toolbar">
+            <h1 class="page__title">Comentários</h1>
+        </div>
+
+        <p class="admin-msg admin-msg--ok" th:if="${sucesso}" th:text="${sucesso}">Mensagem de sucesso.</p>
+        <p class="admin-msg admin-msg--erro" th:if="${erro}" th:text="${erro}">Mensagem de erro.</p>
+
+        <form class="admin-filter" method="get" th:action="@{/admin/comentarios}">
+            <label class="field__label" for="veiculoId">Veículo</label>
+            <select class="field__input field__input--select" id="veiculoId" name="veiculoId">
+                <option value="">Todos os veículos</option>
+                <option th:each="v : ${veiculos}" th:value="${v.id}"
+                        th:selected="${v.id == veiculoId}"
+                        th:text="${v.marca + ' ' + v.modelo}">Marca Modelo</option>
+            </select>
+            <button class="btn" type="submit">Filtrar</button>
+            <a class="btn btn--outline" th:href="@{/admin/comentarios}">Limpar</a>
+        </form>
+
+        <div class="admin-table-wrap" th:if="${!pagina.content.isEmpty()}">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Autor</th>
+                        <th scope="col">Veículo</th>
+                        <th scope="col">Comentário</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${pagina.content}">
+                        <td th:text="${#temporals.format(c.dataCriacao, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</td>
+                        <td th:text="${c.autor.nome}">Autor</td>
+                        <td th:text="${c.veiculo.marca + ' ' + c.veiculo.modelo}">Marca Modelo</td>
+                        <td th:text="${c.texto}">Texto do comentário</td>
+                        <td class="admin-table__actions">
+                            <form th:action="@{/admin/comentarios/{id}/excluir(id=${c.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('Excluir este comentário?')">
+                                <input type="hidden" name="pagina" th:value="${pagina.number}">
+                                <input type="hidden" name="veiculoId" th:if="${veiculoId != null}" th:value="${veiculoId}">
+                                <button class="btn btn--sm btn--danger" type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <nav class="admin-pagination" th:if="${pagina.totalPages > 0}" aria-label="Paginação">
+            <a class="btn btn--sm btn--outline" th:if="${pagina.hasPrevious}"
+               th:href="@{/admin/comentarios(page=${pagina.number - 1}, veiculoId=${veiculoId})}">Anterior</a>
+            <span class="admin-pagination__info"
+                  th:text="|Página ${pagina.number + 1} de ${pagina.totalPages}|">Página 1 de 1</span>
+            <a class="btn btn--sm btn--outline" th:if="${pagina.hasNext}"
+               th:href="@{/admin/comentarios(page=${pagina.number + 1}, veiculoId=${veiculoId})}">Próxima</a>
+        </nav>
+
+        <div class="admin-empty" th:if="${pagina.totalElements == 0}">
+            <p>Nenhum comentário encontrado.</p>
+        </div>
+    </main>
+</body>
+</html>

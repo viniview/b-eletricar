@@ -1,0 +1,335 @@
+/* ---------- Menu do painel admin ---------- */
+.admin-nav { margin-bottom: 2rem; }
+
+.admin-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .25rem;
+    margin: 0;
+    padding: .35rem;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+}
+
+.admin-nav__link {
+    display: block;
+    padding: .45rem 1rem;
+    border-radius: var(--radius-pill);
+    color: var(--ink-soft);
+    font-size: .92rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background .2s, color .2s;
+}
+
+.admin-nav__link:hover,
+.admin-nav__link.is-active {
+    background: var(--volt-tint);
+    color: var(--ink);
+}
+
+/* ---------- Cards do painel ---------- */
+.admin-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.admin-card__link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .5rem;
+    height: 100%;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+
+.admin-card__link:hover {
+    border-color: var(--volt);
+    box-shadow: 0 8px 24px rgba(12, 26, 36, .06);
+    transform: translateY(-2px);
+}
+
+.admin-card__link:focus-visible {
+    outline: none;
+    border-color: var(--volt);
+    box-shadow: 0 0 0 4px rgba(0, 195, 137, .2);
+}
+
+.admin-card__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.admin-card__hint {
+    padding: .15rem .6rem;
+    border-radius: var(--radius-pill);
+    background: var(--volt-tint);
+    color: var(--volt-deep);
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+    .admin-nav__list { border-radius: 14px; }
+}
+
+/* ---------- Cores de erro (espelho do auth.css; esta p�gina n�o carrega auth.css) ---------- */
+:root {
+    --danger: #c0392b;
+    --danger-tint: #fdecea;
+}
+
+/* ---------- Toolbar da listagem ---------- */
+.admin-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-toolbar .page__title { margin: 0; }
+
+/* ---------- Mensagens flash ---------- */
+.admin-msg {
+    margin: 0 0 1.25rem;
+    padding: .75rem 1rem;
+    border-radius: 12px;
+    font-size: .92rem;
+}
+
+.admin-msg--ok    { background: var(--volt-tint);   color: var(--volt-deep); }
+.admin-msg--erro { background: var(--danger-tint); color: var(--danger); }
+
+/* ---------- Tabela de fornecedores ---------- */
+.admin-table-wrap { overflow-x: auto; }
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: .85rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+.admin-table th {
+    background: var(--volt-tint);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: .9rem;
+    letter-spacing: .02em;
+}
+
+.admin-table tbody tr:last-child td { border-bottom: none; }
+
+.admin-table a:not(.btn) {
+    color: var(--volt-deep);
+    text-decoration: none;
+}
+
+.admin-table a:not(.btn):hover { text-decoration: underline; }
+
+.admin-table__muted { color: var(--ink-soft); }
+
+.admin-table__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.admin-table__actions form { margin: 0; }
+
+/* ---------- Estado vazio ---------- */
+.admin-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    border-radius: 14px;
+}
+
+.admin-empty p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+}
+
+/* ---------- Bot�o perigo (mesmo padr�o das variantes .btn--* do style.css) ---------- */
+.btn--danger {
+    --btn-bg: transparent;
+    --btn-ink: var(--danger);
+    --btn-border: var(--danger-tint);
+    --btn-bg-hover: var(--danger);
+    --btn-ink-hover: #fff;
+}
+
+/* ---------- Formul�rio do admin ---------- */
+.admin-form {
+    max-width: 640px;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+}
+
+.admin-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: .5rem;
+}
+
+/* ---------- Grupos de campos do formulário ---------- */
+.admin-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 1.25rem 0 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+}
+
+.admin-form__group:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.admin-form__group-title {
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: .95rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--ink);
+}
+
+/* ---------- Select do formulário ---------- */
+.field__input--select {
+    appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23566873' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right .9rem center;
+}
+
+/* ---------- Aviso (ex.: sem fornecedores) ---------- */
+.admin-warn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0 0 1.25rem;
+    padding: .85rem 1rem;
+    background: var(--bg);
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    color: var(--ink-soft);
+    font-size: .92rem;
+}
+
+.admin-warn p { margin: 0; }
+
+/* ---------- Selos de perfil e de "Você" ---------- */
+.admin-badge {
+    display: inline-block;
+    padding: .15rem .6rem;
+    border-radius: var(--radius-pill);
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.admin-badge--admin {
+    background: var(--volt-tint);
+    color: var(--volt-deep);
+}
+
+.admin-badge--user {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+}
+
+.admin-badge--voce {
+    background: transparent;
+    border: 1px solid var(--volt);
+    color: var(--volt-deep);
+}
+
+/* ---------- Bloco informativo somente leitura (form do usuário) ---------- */
+.admin-info {
+    margin: 0 0 1.25rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.admin-info p {
+    margin: 0 0 .35rem;
+    color: var(--ink-soft);
+    font-size: .92rem;
+}
+
+.admin-info p:last-child { margin-bottom: 0; }
+
+.admin-info strong { color: var(--ink); }
+
+/* ---------- Filtro da listagem de comentários ---------- */
+.admin-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
+}
+
+.admin-filter label { margin: 0; }
+
+/* ---------- Paginação ---------- */
+.admin-pagination {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.25rem;
+}
+
+.admin-pagination__info {
+    color: var(--ink-soft);
+    font-size: .92rem;
+}
