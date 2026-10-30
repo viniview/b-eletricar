@@ -1,5 +1,6 @@
 package com.example.b_eletricar.database.repository;
 
+import com.example.b_eletricar.database.model.Fornecedor;
 import com.example.b_eletricar.database.model.Veiculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -10,6 +11,6 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, Long>, JpaSpec
 
     List<Veiculo> findByModeloContainingIgnoreCase(String modelo);
 
-    public List<Veiculo> findByFornecedor(com.example.b_eletricar.database.model.MarcaVeiculo fornecedor);
+    public List<Veiculo> findByFornecedor(Fornecedor fornecedor);
     
 }
