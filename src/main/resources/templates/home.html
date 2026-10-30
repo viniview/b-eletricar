@@ -3,11 +3,131 @@
       th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
 <head>
     <title>Eletrocar | Início</title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <main class="page container">
+        <section>
         <h1 class="page__title">Encontre seu próximo carro elétrico</h1>
         <p class="page__lead">Compare modelos, autonomia e preços em um só lugar.</p>
+        </section>
+        <section class="palavraChave">
+            <h4>Busca por palavra-chave</h4>
+            <form th:action="@{/veiculos/listagem}" method="get">
+                <label for="palavraChave">Palavra-chave:</label>
+                <input type="text"
+                       id="palavraChave"
+                       name="palavraChave"
+                       placeholder="Ex.: BYD ou Dolphin Mini">
+                <button type="submit">Buscar</button>
+            </form>
+        </section>
+        <section class="filtros">
+            <h4> Busca por filtros</h4>
+            <form th:action="@{/veiculos/listagem}" method="get">
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca" th:value="${param.marca}"
+                placeholder="Ex.: BYD">
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" name="modelo" th:value="${param.modelo}"
+               placeholder="Ex.: Dolphin">
+            <label for="carroceria">Carroceria:</label>
+            <select id="carroceria" name="carroceria">
+            <option value="">Todas</option>
+                <option value="SUV"
+                        th:selected="${param.carroceria != null and param.carroceria[0] == 'SUV'}">SUV</option>
+                <option value="Sedan"
+                        th:selected="${param.carroceria != null and param.carroceria[0] == 'Sedan'}">Sedan</option>
+                <option value="Hatch"
+                        th:selected="${param.carroceria != null and param.carroceria[0] == 'Hatch'}">Hatch</option>
+            </select>
+            <label for="precoMin">
+                Preço mínimo (R$):
+            </label>
+            <input type="number" id="precoMin" name="precoMin" 
+               min="0" step="0.01" th:value="${param.precoMin}">
+            <label for="precoMax">
+                Preço máximo (R$):
+            </label>
+            <input type="number" id="precoMax" name="precoMax"
+               min="0" step="0.01" th:value="${param.precoMax}">
+            <label for="autonomiaKmMin">
+                Autonomia mínima (km):
+            </label>
+            <input type="number" id="autonomiaKmMin" name="autonomiaKmMin" 
+                min="0" th:value="${param.autonomiaKmMin}"> 
+            <label for="autonomiaKmMax">
+                Autonomia máxima (km):
+            </label>
+            <input type="number" id="autonomiaKmMax" name="autonomiaKmMax"  
+                min="0" th:value="${param.autonomiaKmMax}">
+            <label for="capacidadeBateriaKwhMin">
+                Capacidade mínima da bateria (kWh):
+            </label>
+            <input type="number" id="capacidadeBateriaKwhMin" name="capacidadeBateriaKwhMin" 
+                min="0" step="0.1" th:value="${param.capacidadeBateriaKwhMin}">
+            <label for="capacidadeBateriaKwhMax">
+                Capacidade máxima da bateria (kWh):
+            </label>
+            <input type="number" id="capacidadeBateriaKwhMax" name="capacidadeBateriaKwhMax"
+                min="0" step="0.1" th:value="${param.capacidadeBateriaKwhMax}">
+            <label for="potenciaCvMin">
+                Potência mínima (cv):
+            </label>
+            <input type="number" id="potenciaCvMin" name="potenciaCvMin"
+                min="0" th:value="${param.potenciaCvMin}">
+            <label for="potenciaCvMax">
+                Potência máxima (cv):
+            </label>
+            <input type="number" id="potenciaCvMax" name="potenciaCvMax"
+                min="0" th:value="${param.potenciaCvMax}">
+            <label for="tempoCargaHorasMin">
+                Tempo mínimo de carga (horas):
+            </label>
+            <input type="number" id="tempoCargaHorasMin" name="tempoCargaHorasMin"
+                min="0" step="0.1" th:value="${param.tempoCargaHorasMin}">
+            <label for="tempoCargaHorasMax">
+                Tempo máximo de carga (horas):
+            </label>
+            <input type="number" id="tempoCargaHorasMax" name="tempoCargaHorasMax"
+                min="0" step="0.1"
+                th:value="${param.tempoCargaHorasMax}">
+            <label for="palavraChaveFiltro">Palavra-chave:</label>
+            <input type="text" id="palavraChaveFiltro" name="palavraChave"
+                th:value="${param.palavraChave}" placeholder="Ex.: BYD ou Dolphin Mini">
+            <button type="submit">Filtrar</button>
+            </form>
+            <p th:if="${erro != null}"
+            th:text="${erro}"
+            class="mensagem-erro">
+            </p>
+        </section>
+        <section class="catalogo">
+            <h2 class="eletricos_home">Catálogo de carros elétricos</h2>
+            <article class="especificacoes_ev" th:each="veiculo : ${veiculos}"> 
+                <h3 th:text="${veiculo.marca + ' ' + veiculo.modelo}">
+                    Marca e Modelo
+                </h3>
+                <p>
+                    Preço:
+                <span th:text="${veiculo.preco}">R$0,00</span>
+                </p>
+                <p>
+                    Autonomia:
+                <span th:text="${veiculo.autonomiaKm}">0</span> km
+                </p>
+                <a th:href="@{/veiculos/{id}(id=${veiculo.id})}">
+                    Ver detalhes
+                </a>
+                <a th:href="@{/veiculos/{id}/fornecedor(id=${veiculo.id})}">
+                    Acessar fornecedor
+                </a>
+            </article>
+            <p th:if="${#lists.isEmpty(veiculos) and erro == null}">
+                Nenhum veículo encontrado com os filtros informados.
+            </p>
+        </section>
     </main>
 </body>
 </html>

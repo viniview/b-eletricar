@@ -19,6 +19,11 @@ public class VeiculoService {
         this.veiculoRepository = veiculoRepository;
     }
 
+    // Listagem de todos os veículos:
+    public List<Veiculo> listarTodos() {
+        return veiculoRepository.findAll();
+    }
+
     // Busca de um veículo pelo ID
     public Optional<Veiculo> buscarVeiculoPorId(Long id) {
         return veiculoRepository.findById(id);
