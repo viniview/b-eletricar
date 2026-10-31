@@ -2,6 +2,7 @@ package com.example.b_eletricar.services;
 
 import java.util.*;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.example.b_eletricar.database.model.Veiculo;
@@ -21,7 +22,31 @@ public class VeiculoService {
 
     // Listagem de todos os veículos:
     public List<Veiculo> listarTodos() {
-        return veiculoRepository.findAll();
+        return veiculoRepository.findAll(Sort.by("marca").and(Sort.by("modelo")));
+    }
+
+    public List<Veiculo> buscarParaComparacao(String marca, String modelo,
+                                               String carroceria, String palavraChave) {
+        Specification<Veiculo> spec = (root, query, cb) -> cb.conjunction();
+        if (marca != null && !marca.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(cb.lower(root.get("marca")), marca.trim().toLowerCase(Locale.ROOT)));
+        }
+        if (modelo != null && !modelo.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(cb.lower(root.get("modelo")), modelo.trim().toLowerCase(Locale.ROOT)));
+        }
+        if (carroceria != null && !carroceria.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(cb.lower(root.get("carroceria")), carroceria.trim().toLowerCase(Locale.ROOT)));
+        }
+        if (palavraChave != null && !palavraChave.isBlank()) {
+            String valor = "%" + palavraChave.trim().toLowerCase(Locale.ROOT) + "%";
+            spec = spec.and((root, query, cb) ->
+                    cb.or(cb.like(cb.lower(root.get("marca")), valor),
+                            cb.like(cb.lower(root.get("modelo")), valor)));
+        }
+        return veiculoRepository.findAll(spec, Sort.by("marca").and(Sort.by("modelo")));
     }
 
     // Busca de um veículo pelo ID
