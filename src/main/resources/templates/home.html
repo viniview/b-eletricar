@@ -23,9 +23,16 @@
                 <button type="submit">Buscar</button>
             </form>
         </section>
-        <section class="filtros">
-            <h4> Busca por filtros</h4>
+            <button
+                type="button"
+                id="toggle-filtros"
+                aria-controls="sidebar-filtros"
+                aria-expanded="false">
+                ☰ Filtros
+            </button>
+        <aside id="sidebar-filtros" hidden>
             <form th:action="@{/veiculos/listagem}" method="get">
+                <h4> Busca por filtros</h4>
             <label for="marca">Marca:</label>
             <input type="text" id="marca" name="marca" th:value="${param.marca}"
                 placeholder="Ex.: BYD">
@@ -98,11 +105,11 @@
                 th:value="${param.palavraChave}" placeholder="Ex.: BYD ou Dolphin Mini">
             <button type="submit">Filtrar</button>
             </form>
-            <p th:if="${erro != null}"
-            th:text="${erro}"
-            class="mensagem-erro">
+            <p  th:if="${erro != null}"
+                th:text="${erro}"
+                class="mensagem-erro">
             </p>
-        </section>
+        </aside>
         <section class="catalogo">
             <h2 class="eletricos_home">Catálogo de carros elétricos</h2>
             <article class="especificacoes_ev" th:each="veiculo : ${veiculos}"> 
@@ -125,7 +132,7 @@
                 </a>
             </article>
             <p th:if="${#lists.isEmpty(veiculos) and erro == null}">
-                Nenhum veículo encontrado com os filtros informados.
+                Nenhum veículo encontrado.
             </p>
         </section>
     </main>
