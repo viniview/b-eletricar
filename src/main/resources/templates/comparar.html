@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+    <head>
+        <title>Eletrocar | Comparar veículos</title>
+    </head>
+    <body>
+        
+        <main class="page container comparison">
+            <link rel="stylesheet" th:href="@{/css/comparar.css}">
+
+            <header class="comparison__intro">
+                <p class="comparison__eyebrow">Escolha com mais confiança</p>
+                <h1 class="page__title">Compare carros elétricos</h1>
+                <p class="page__lead">
+                    Selecione dois ou três veículos e descubra qual se destaca em cada atributo.
+                </p>
+            </header>
+
+            <p class="comparison__message comparison__message--error" role="alert"
+            th:if="${erro}" th:text="${erro}"></p>
+            <p class="comparison__message comparison__message--success" role="status"
+            th:if="${sucesso}" th:text="${sucesso}"></p>
+
+            <form id="comparison-form" class="comparison__form"
+                th:action="@{/comparar}" method="get"
+                th:data-api-url="@{/api/comparador}">
+
+                <section aria-labelledby="slots-titulo">
+                    <h2 id="slots-titulo" class="visually-hidden">Veículos selecionados</h2>
+
+                    <div class="comparison__cards">
+                        <article class="comparison-card"
+                                th:each="slot : ${slots}"
+                                th:with="v=${slot.veiculo}"
+                                th:classappend="${(v != null ? 'comparison-card--filled ' : '') + (slot.numero > 2 ? 'comparison-card--optional' : '')}"
+                                th:data-slot="${slot.numero}">
+
+                            <header class="comparison-card__header">
+                                <span class="comparison-card__number" th:text="${'0' + slot.numero}">01</span>
+                                <h3>
+                                    <span th:text="${slot.titulo}">Primeiro carro</span>
+                                </h3>
+                            </header>
+
+                            <input type="hidden" th:name="${'carro' + slot.numero}" th:value="${v?.id}">
+
+                            <div class="comparison-card__body" aria-live="polite">
+                                <p class="comparison-card__empty" data-slot-empty th:hidden="${v != null}">
+                                    Nenhum veículo selecionado.
+                                </p>
+                                <div data-slot-filled th:hidden="${v == null}">
+                                    <p class="comparison-card__meta" data-slot-marca th:text="${v?.marca}"></p>
+                                    <p class="comparison-card__name" data-slot-modelo th:text="${v?.modelo}"></p>
+                                    <p class="comparison-card__meta" data-slot-categoria th:text="${v?.carroceria}"></p>
+                                    <p class="comparison-card__price" data-slot-preco
+                                    th:text="${v != null and v.preco != null ? #numbers.formatDecimal(v.preco, 1, 'POINT', 0, 'COMMA') : ''}"></p>
+                                </div>
+                            </div>
+
+                            <footer class="comparison-card__footer">
+                                <button type="button" class="comparison-card__select" data-action="selecionar"
+                                        th:text="${v == null} ? 'Selecionar veículo' : 'Trocar veículo'">
+                                    Selecionar veículo
+                                </button>
+                                <button type="button" class="comparison-card__remove" data-action="remover"
+                                        th:hidden="${v == null}">
+                                    Remover
+                                </button>
+                            </footer>
+                        </article>
+                    </div>
+                </section>
+
+                <footer class="comparison__actions">
+                    <button class="comparison__button" type="submit" id="comparison-submit"
+                            aria-describedby="comparison-hint"
+                            th:disabled="${!podeComparar}">
+                        Comparar veículos
+                        <span aria-hidden="true">&rarr;</span>
+                    </button>
+                    <p id="comparison-hint">Selecione ao menos 2 carros para comparar.</p>
+                </footer>
+            </form>
+
+            <dialog id="picker" class="picker" aria-labelledby="picker-titulo">
+                <header class="picker__header">
+                    <h2 id="picker-titulo" class="picker__title">Adicionar carro</h2>
+                    <button type="button" class="picker__close" data-picker-close aria-label="Fechar">&times;</button>
+                </header>
+
+                <label class="visually-hidden" for="picker-busca">Buscar marca ou modelo</label>
+                <input id="picker-busca" class="picker__search" type="search"
+                    placeholder="Buscar marca ou modelo" maxlength="60" autocomplete="off">
+
+                <div class="picker__filters">
+                    <label for="picker-marca">Marca</label>
+                    <select id="picker-marca"><option value="">Todas as marcas</option></select>
+                    <label for="picker-modelo">Modelo</label>
+                    <select id="picker-modelo" disabled><option value="">Todos os modelos</option></select>
+                    <label for="picker-carroceria">Carroceria</label>
+                    <select id="picker-carroceria"><option value="">Todas</option></select>
+                </div>
+
+                <p id="picker-status" class="picker__status" role="status"></p>
+                <ul id="picker-resultados" class="picker__results"></ul>
+            </dialog>
+
+            <section class="comparison-results" id="resultado" th:if="${resultados != null}"
+                    aria-labelledby="resultado-titulo">
+                <header class="comparison-results__heading">
+                    <p class="comparison__eyebrow">Análise lado a lado</p>
+                    <h2 id="resultado-titulo">Resultado da comparação</h2>
+                    <p>O destaque de cada atributo considera apenas os veículos com dados cadastrados.</p>
+                </header>
+
+                <div class="comparison-results__table-wrap" role="region" tabindex="0"
+                    aria-label="Tabela de comparação (role para os lados se necessário)">
+                    <table class="comparison-results__table">
+                        <caption class="visually-hidden">Melhor veículo em cada atributo</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">Atributo</th>
+                            <th scope="col">Valores</th>
+                            <th scope="col">Melhor resultado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="resultado : ${resultados}">
+                            <th scope="row">
+                                <span th:text="${resultado.nome}"></span>
+                                <small th:text="${resultado.observacao}"></small>
+                            </th>
+                            <td>
+                                <ul class="comparison-results__values">
+                                    <li th:each="valor : ${resultado.valores}">
+                                        <span th:text="|${valor.veiculo}: |"></span>
+                                        <strong th:text="${valor.valor}"></strong>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <span class="comparison-results__empty"
+                                    th:if="${#lists.isEmpty(resultado.vencedores)}">Sem dados</span>
+                                <ul class="comparison-results__winners"
+                                    th:unless="${#lists.isEmpty(resultado.vencedores)}">
+                                    <li th:each="vencedor : ${resultado.vencedores}" th:text="${vencedor}"></li>
+                                </ul>
+                                <span class="comparison-results__tie"
+                                    th:if="${resultado.vencedores.size() > 1}">Empate</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <script th:src="@{/js/comparar.js}" defer></script>
+        </main>
+    </body>
+</html>

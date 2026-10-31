@@ -30,6 +30,7 @@ class VeiculoAccessorsTest {
         veiculo.setCapacidadeBateriaKwh(50.0);
         veiculo.setPotenciaCv(130);
         veiculo.setTempoCargaHoras(7.5);
+        veiculo.setFotoUrl("https://example.com/foto.jpg");
         veiculo.setFornecedor(fornecedor);
 
         assertThat(veiculo.getId()).isEqualTo(7L);
@@ -41,6 +42,7 @@ class VeiculoAccessorsTest {
         assertThat(veiculo.getCapacidadeBateriaKwh()).isEqualTo(50.0);
         assertThat(veiculo.getPotenciaCv()).isEqualTo(130);
         assertThat(veiculo.getTempoCargaHoras()).isEqualTo(7.5);
+        assertThat(veiculo.getFotoUrl()).isEqualTo("https://example.com/foto.jpg");
         assertThat(veiculo.getFornecedor()).isSameAs(fornecedor);
         assertThat(fornecedor.getNome()).isEqualTo("BYD");
     }
@@ -58,6 +60,7 @@ class VeiculoAccessorsTest {
         assertThat(veiculo.getCapacidadeBateriaKwh()).isNull();
         assertThat(veiculo.getPotenciaCv()).isNull();
         assertThat(veiculo.getTempoCargaHoras()).isNull();
+        assertThat(veiculo.getFotoUrl()).isNull();
         assertThat(veiculo.getFornecedor()).isNull();
     }
 
@@ -75,7 +78,7 @@ class VeiculoAccessorsTest {
                 .toArray(String[]::new);
         assertThat(campos).containsExactlyInAnyOrder(
                 "id", "marca", "modelo", "carroceria", "preco", "autonomiaKm",
-                "capacidadeBateriaKwh", "potenciaCv", "tempoCargaHoras", "fornecedor");
+                "capacidadeBateriaKwh", "potenciaCv", "tempoCargaHoras", "fotoUrl", "fornecedor");
 
         Column marca = campo("marca").getAnnotation(Column.class);
         assertThat(marca).isNotNull();

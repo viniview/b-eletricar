@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +9,8 @@
 </head>
 <body>
 <main>
-    <a class="back" th:href="@{/veiculos/listagem}">
+    <link rel="stylesheet" th:href="@{/css/comparar.css}">
+    <a class="back" th:href="@{/}">
         Voltar para veículos
     </a>
     <article class="card" th:object="${veiculo}">
@@ -81,6 +83,73 @@
             </a>
         </section>
     </article>
+
+    <section class="avaliacoes" aria-labelledby="avaliacoes-titulo">
+        <h2 id="avaliacoes-titulo">Avaliações dos usuários</h2>
+        <p th:if="${mediaAvaliacoes != null}">
+            Nota média:
+            <strong th:text="${#numbers.formatDecimal(mediaAvaliacoes, 1, 1)}">0,0</strong>
+            / 5 (<span th:text="${#lists.size(comentarios)}">0</span> avaliações)
+        </p>
+        <p th:if="${mediaAvaliacoes == null and #lists.isEmpty(comentarios)}">
+            Este veículo ainda não recebeu avaliações.
+        </p>
+        <p th:if="${mediaAvaliacoes == null and !#lists.isEmpty(comentarios)}">
+            Ainda não há notas para as avaliações deste veículo.
+        </p>
+
+        <p class="avaliacoes__mensagem avaliacoes__mensagem--sucesso"
+           th:if="${sucessoAvaliacao}" th:text="${sucessoAvaliacao}" role="status"></p>
+        <p class="avaliacoes__mensagem avaliacoes__mensagem--erro"
+           th:if="${erroAvaliacao}" th:text="${erroAvaliacao}" role="alert"></p>
+
+        <form class="avaliacoes__form" sec:authorize="isAuthenticated()"
+              th:action="@{/veiculos/{id}/avaliacoes(id=${veiculo.id})}"
+              th:object="${avaliacaoForm}" method="post">
+            <fieldset class="avaliacoes__estrelas">
+                <legend>Sua nota (obrigatória)</legend>
+                <div class="avaliacoes__estrelas-linha">
+                    <th:block th:each="nota : ${#numbers.sequence(5, 1, -1)}">
+                        <input type="radio" th:id="${'avaliacao-nota-' + nota}"
+                               th:value="${nota}" th:field="*{nota}">
+                        <label th:for="${'avaliacao-nota-' + nota}">
+                            <span aria-hidden="true">&#9733;</span>
+                            <span class="visually-hidden" th:text="${nota + ' de 5 estrelas'}"></span>
+                        </label>
+                    </th:block>
+                </div>
+                <p class="avaliacoes__campo-erro" th:if="${#fields.hasErrors('nota')}"
+                   th:errors="*{nota}"></p>
+            </fieldset>
+            <label for="avaliacao-texto">Comentário (obrigatório, até 1000 caracteres)</label>
+            <textarea id="avaliacao-texto" th:field="*{texto}" maxlength="1000" rows="4"
+                      placeholder="Conte como é a sua experiência com este carro."></textarea>
+            <p class="avaliacoes__campo-erro" th:if="${#fields.hasErrors('texto')}"
+               th:errors="*{texto}"></p>
+            <button class="botao" type="submit">Publicar avaliação</button>
+        </form>
+        <p sec:authorize="isAnonymous()">
+            <a th:href="@{/login}">Entre na sua conta</a> para avaliar e comentar este veículo.
+        </p>
+
+        <div class="avaliacoes__lista" th:if="${!#lists.isEmpty(comentarios)}">
+            <article class="avaliacoes__item" th:each="comentario : ${comentarios}">
+                <h3 th:text="${comentario.autor.nome}">Usuário</h3>
+                <p class="avaliacoes__nota" th:if="${comentario.nota != null}">
+                    <span th:each="estrela : ${#numbers.sequence(1, comentario.nota)}"
+                          aria-hidden="true">&#9733;</span>
+                    <span class="visually-hidden"
+                          th:text="${comentario.nota + ' de 5 estrelas'}"></span>
+                </p>
+                <p th:text="${comentario.texto}">Comentário sobre o veículo.</p>
+                <time th:if="${comentario.dataCriacao != null}"
+                      th:datetime="${comentario.dataCriacao}"
+                      th:text="${#temporals.format(comentario.dataCriacao, 'dd/MM/yyyy HH:mm')}">
+                    Data
+                </time>
+            </article>
+        </div>
+    </section>
 </main>
 </body>
 </html>

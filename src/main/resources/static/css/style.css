@@ -172,6 +172,93 @@ main { flex: 1; }
 /* ---------- Conteúdo ---------- */
 .page { padding-block: 4rem; }
 
+.avaliacoes {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+}
+
+.avaliacoes__form,
+.avaliacoes__lista {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.avaliacoes__form textarea {
+    width: 100%;
+    padding: .75rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font: inherit;
+}
+
+.avaliacoes__estrelas {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.avaliacoes__estrelas-linha {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    width: max-content;
+}
+
+.avaliacoes__estrelas input {
+    position: absolute;
+    opacity: 0;
+}
+
+.avaliacoes__estrelas label {
+    padding-inline: .15rem;
+    color: var(--line);
+    font-size: 1.7rem;
+    cursor: pointer;
+}
+
+.avaliacoes__estrelas input:checked ~ label,
+.avaliacoes__estrelas label:hover,
+.avaliacoes__estrelas label:hover ~ label,
+.avaliacoes__estrelas input:focus-visible + label {
+    color: #f2b01e;
+}
+
+.avaliacoes__estrelas input:focus-visible + label {
+    outline: 2px solid var(--volt-deep);
+}
+
+.avaliacoes__item {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+}
+
+.avaliacoes__item h3,
+.avaliacoes__item p {
+    margin: 0 0 .4rem;
+}
+
+.avaliacoes__nota {
+    color: #f2b01e;
+}
+
+.avaliacoes__item time {
+    color: var(--ink-soft);
+    font-size: .85rem;
+}
+
+.avaliacoes__campo-erro,
+.avaliacoes__mensagem--erro {
+    color: #a32121;
+}
+
+.avaliacoes__mensagem--sucesso {
+    color: var(--volt-deep);
+}
+
 .page__title {
     max-width: 18ch;
     margin: 0 0 1rem;

@@ -35,6 +35,7 @@
                         <th scope="col">Data</th>
                         <th scope="col">Autor</th>
                         <th scope="col">Veículo</th>
+                        <th scope="col">Nota</th>
                         <th scope="col">Comentário</th>
                         <th scope="col">Ações</th>
                     </tr>
@@ -44,6 +45,7 @@
                         <td th:text="${#temporals.format(c.dataCriacao, 'dd/MM/yyyy HH:mm')}">01/01/2026 12:00</td>
                         <td th:text="${c.autor.nome}">Autor</td>
                         <td th:text="${c.veiculo.marca + ' ' + c.veiculo.modelo}">Marca Modelo</td>
+                        <td th:text="${c.nota != null ? c.nota + '/5' : 'Sem nota'}">5/5</td>
                         <td th:text="${c.texto}">Texto do comentário</td>
                         <td class="admin-table__actions">
                             <form th:action="@{/admin/comentarios/{id}/excluir(id=${c.id})}"

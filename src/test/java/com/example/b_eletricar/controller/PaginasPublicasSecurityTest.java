@@ -25,6 +25,7 @@ import com.example.b_eletricar.dto.CadastroForm;
 import com.example.b_eletricar.security.CustomOidcUser;
 import com.example.b_eletricar.security.LoginFailureHandler;
 import com.example.b_eletricar.services.CadastroService;
+import com.example.b_eletricar.services.VeiculoService;
 
 // Carrega so a camada web (os controllers) e a configuracao de seguranca, sem bd
 @WebMvcTest({HomeController.class, LoginController.class, CadastroController.class})
@@ -51,6 +52,9 @@ class PaginasPublicasSecurityTest {
 
     @MockitoBean
     private CadastroService cadastroService;
+
+    @MockitoBean
+    private VeiculoService veiculoService;
 
     //  Paginas publicas 
 

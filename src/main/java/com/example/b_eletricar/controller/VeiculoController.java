@@ -2,10 +2,14 @@ package com.example.b_eletricar.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+import com.example.b_eletricar.dto.AvaliacaoForm;
+import com.example.b_eletricar.services.AvaliacaoService;
 import com.example.b_eletricar.services.VeiculoService;
 
 
@@ -13,10 +17,12 @@ import com.example.b_eletricar.services.VeiculoService;
 @RequestMapping("/veiculos")
 public class VeiculoController {
 
-    private VeiculoService veiculoService;
+    private final VeiculoService veiculoService;
+    private final AvaliacaoService avaliacaoService;
 
-    public VeiculoController(VeiculoService veiculoService) {
+    public VeiculoController(VeiculoService veiculoService, AvaliacaoService avaliacaoService) {
         this.veiculoService = veiculoService;
+        this.avaliacaoService = avaliacaoService;
     }   
 
     // Endpoint para busca de veículo por id
@@ -25,9 +31,13 @@ public class VeiculoController {
         var veiculo = veiculoService.buscarVeiculoPorId(id);
         if (veiculo.isPresent()) {
             model.addAttribute("veiculo", veiculo.get());
+            var comentarios = avaliacaoService.listarPorVeiculo(id);
+            model.addAttribute("comentarios", comentarios);
+            model.addAttribute("mediaAvaliacoes", avaliacaoService.media(comentarios));
+            model.addAttribute("avaliacaoForm", new AvaliacaoForm());
             return "detalhes-veiculo";
         }
-        return "redirect:/";
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Veículo não encontrado.");
     }
     
 

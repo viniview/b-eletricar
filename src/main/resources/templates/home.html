@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
 <head>
     <title>Eletrocar | Início</title>
@@ -12,7 +13,7 @@
         <h1 class="page__title">Encontre seu próximo carro elétrico</h1>
         <p class="page__lead">Compare modelos, autonomia e preços em um só lugar.</p>
         </section>
-        <section class="palavraChave">
+        <section class="palavraChave" sec:authorize="isAuthenticated()">
             <h4>Busca por palavra-chave</h4>
             <form th:action="@{/veiculos/listagem}" method="get">
                 <label for="palavraChave">Palavra-chave:</label>
@@ -23,7 +24,8 @@
                 <button type="submit">Buscar</button>
             </form>
         </section>
-        <section class="filtros">
+
+        <section class="filtros" sec:authorize="isAuthenticated()">
             <h4> Busca por filtros</h4>
             <form th:action="@{/veiculos/listagem}" method="get">
             <label for="marca">Marca:</label>
