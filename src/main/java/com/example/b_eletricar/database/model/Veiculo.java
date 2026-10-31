@@ -33,6 +33,9 @@ public class Veiculo {
     private Integer potenciaCv;
     private Double tempoCargaHoras;
 
+
+    private String fotoUrl;
+
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
     private Fornecedor fornecedor;
