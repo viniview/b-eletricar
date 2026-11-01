@@ -17,6 +17,10 @@
         <section>
             <p class="muted" th:text="*{marca}">Marca</p>
             <h1 th:text="*{modelo}">Modelo do veículo</h1>
+            <img class="veiculo-foto veiculo-foto--detalhe"
+                 th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(veiculo.fotoUrl) ? 'default.jpg' : veiculo.fotoUrl})}"
+                 th:alt="${veiculo.marca + ' ' + veiculo.modelo}"
+                 loading="lazy">
             <p class="preco"
                th:text="*{preco != null ? #numbers.formatCurrency(preco) : 'Preço não informado'}">
                 R$ 0,00

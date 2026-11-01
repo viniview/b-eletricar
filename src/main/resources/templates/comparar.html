@@ -50,6 +50,11 @@
                                     Nenhum veículo selecionado.
                                 </p>
                                 <div data-slot-filled th:hidden="${v == null}">
+                                    <img class="veiculo-foto veiculo-foto--thumb"
+                                         data-slot-foto
+                                         th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(v?.fotoUrl) ? 'default.jpg' : v.fotoUrl})}"
+                                         th:alt="${v != null ? v.marca + ' ' + v.modelo : ''}"
+                                         loading="lazy">
                                     <p class="comparison-card__meta" data-slot-marca th:text="${v?.marca}"></p>
                                     <p class="comparison-card__name" data-slot-modelo th:text="${v?.modelo}"></p>
                                     <p class="comparison-card__meta" data-slot-categoria th:text="${v?.carroceria}"></p>

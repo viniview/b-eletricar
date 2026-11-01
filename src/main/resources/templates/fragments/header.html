@@ -14,12 +14,12 @@
             th:action="@{/veiculos/listagem}" method="get">
 
             <input class="search__input" type="search"
-                name="palavraChave"
+                name="palavraChave" id="palavraChave"
                 placeholder="Buscar veículo, marca ou modelo"
                 aria-label="Buscar veículo, marca ou modelo">
         </form>
         <a class="site-nav__link" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Administração</a>
-
+        <a class="site-nav__link site-nav__link--accent" th:href="@{/comparar}">Comparar veículos</a>
         <a class="site-nav__link site-nav__link--accent" th:unless="${usuarioLogado}"
         th:href="@{/login}">Login</a>
 
@@ -31,21 +31,6 @@
 
     </div>
 
-    <nav class="site-nav" aria-label="Principal">
-        <ul class="site-nav__list container">
-            <!-- Os href="#" viram thref="@{/...}" quando as páginas existirem -->
-            <li><a class="site-nav__link site-nav__link--accent" th:href="@{/comparar}">Comparar veículos</a></li>
-            <li><a class="site-nav__link" href="#">Renault</a></li>
-            <li><a class="site-nav__link" href="#">BYD</a></li>
-            <li><a class="site-nav__link" href="#">Volvo</a></li>
-            <li><a class="site-nav__link" href="#">Fiat</a></li>
-            <li><a class="site-nav__link" href="#">GAC</a></li>
-            <li><a class="site-nav__link" href="#">BMW</a></li>
-            <li><a class="site-nav__link" href="#">Audi</a></li>
-            <li><a class="site-nav__link" href="#">Geely</a></li>
-            <li><a class="site-nav__link" href="#">MG</a></li>
-        </ul>
-    </nav>
 </header>
 
 </body>

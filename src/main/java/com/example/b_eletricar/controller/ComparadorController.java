@@ -83,7 +83,8 @@ public class ComparadorController {
         return veiculoService.buscarParaComparacao(marca, modelo, carroceria, busca)
                 .stream()
                 .map(veiculo -> new VeiculoOpcao(veiculo.getId(), veiculo.getMarca(),
-                        veiculo.getModelo(), veiculo.getCarroceria(), veiculo.getPreco()))
+                        veiculo.getModelo(), veiculo.getCarroceria(), veiculo.getPreco(),
+                        veiculo.getFotoUrl()))
                 .toList();
     }
 

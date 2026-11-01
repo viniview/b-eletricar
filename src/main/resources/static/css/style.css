@@ -1,10 +1,9 @@
 /* ---------- Tokens ---------- */
 :root {
-    --bg: #f4f7f8;
-    --surface: #ffffff;
-    --ink: #0c1a24;
-    --ink-soft: #566873;
-    --line: #dde5e9;
+    --bg: #e9eff0;          /* fundo da página */
+    --surface: #fbfdfc;     /* cards e boxes */
+    --surface-2: #f0f5f4;   /* inputs e áreas internas */
+    --line: #d3dde0;        /* bordas */
     --volt: #00c389;
     --volt-deep: #008f68;
     --volt-tint: #e3f8f0;
@@ -13,6 +12,8 @@
     --on-black: #f2f2f2;
     --on-black-soft: #9a9a9a;
 
+    --ink: #0c1a24;         /* texto principal */
+    --ink-soft: #4a5d68;    /* texto secundário (era #566873) */
     --font-display: "Sora", system-ui, sans-serif;
     --font-body: "Manrope", system-ui, sans-serif;
 
@@ -260,10 +261,10 @@ main { flex: 1; }
 }
 
 .page__title {
-    max-width: 18ch;
+    max-width: 40ch;
     margin: 0 0 1rem;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 2vw, 3.5rem);
     line-height: 1.1;
     letter-spacing: -0.03em;
 }
@@ -502,3 +503,336 @@ main { flex: 1; }
 }
 a.avatar:hover { background: #fff; }
 a.avatar:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(0, 195, 137, .3); }
+
+/* ---------- Fotos dos veículos ---------- */
+.veiculo-foto {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    margin-bottom: .75rem;
+}
+
+.veiculo-foto--detalhe {
+    max-width: 520px;
+}
+
+.veiculo-foto--thumb {
+    width: 72px;
+    height: 48px;
+    max-width: none;
+    aspect-ratio: auto;
+    margin-bottom: .5rem;
+    border-radius: 8px;
+}
+/* ---------- Catálogo / Card de veículo ---------- */
+.catalogo__lista {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.veiculo-card {
+    display: grid;
+    grid-template-columns: minmax(200px, 320px) 1fr;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.veiculo-card:hover {
+    border-color: var(--volt);
+    box-shadow: 0 8px 24px rgba(12, 26, 36, .08);
+}
+
+.veiculo-card__media {
+    display: block;
+    background: var(--bg);
+}
+
+.veiculo-card__foto {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    object-fit: cover;
+}
+
+.veiculo-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    padding: 1.25rem 1.5rem;
+}
+
+.veiculo-card__marca {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.veiculo-card__titulo {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.veiculo-card__preco {
+    margin: .25rem 0 0;
+    color: var(--volt-deep);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.veiculo-card__specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem 1.25rem;
+    margin: .5rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-soft);
+    font-size: .92rem;
+}
+
+.veiculo-card__specs strong { color: var(--ink); }
+
+.veiculo-card__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+@media (max-width: 720px) {
+    .veiculo-card { grid-template-columns: 1fr; }
+    .veiculo-card__foto { height: auto; aspect-ratio: 16 / 10; }
+}
+/* ---------- Layout catálogo + filtros ---------- */
+.catalogo-layout {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+    margin-top: 2rem;
+}
+
+/* ---------- Filtros ---------- */
+.filtros {
+    position: sticky;
+    top: calc(var(--header-h) + 1rem);
+    max-height: calc(100vh - var(--header-h) - 2rem);
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+}
+
+.filtros__titulo {
+    padding: 1.1rem 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    list-style: none;
+}
+.filtros__titulo::-webkit-details-marker { display: none; }
+
+.filtros__titulo::after {
+    content: "";
+    float: right;
+    width: 8px;
+    height: 8px;
+    margin-top: .4rem;
+    border-right: 2px solid var(--ink-soft);
+    border-bottom: 2px solid var(--ink-soft);
+    transform: rotate(45deg);
+    transition: transform .2s;
+}
+.filtros__details[open] > .filtros__titulo::after { transform: rotate(-135deg); }
+
+.filtros__form {
+    display: grid;
+    gap: 1rem;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.25rem;
+}
+
+.filtros label,
+.filtros legend {
+    display: block;
+    margin-bottom: .35rem;
+    padding: 0;
+    color: var(--ink-soft);
+    font-size: .82rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+}
+
+.filtros input,
+.filtros select {
+    width: 100%;
+    height: 42px;
+    padding: 0 .85rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-size: .92rem;
+    transition: border-color .2s, background .2s, box-shadow .2s;
+}
+
+.filtros input::placeholder { color: #93a2ab; }
+
+.filtros input:focus,
+.filtros select:focus {
+    outline: none;
+    background: var(--surface);
+    border-color: var(--volt);
+    box-shadow: 0 0 0 4px rgba(0, 195, 137, .15);
+}
+
+.campo-faixa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.campo-faixa legend { grid-column: 1 / -1; float: left; width: 100%; }
+
+.filtros__acoes {
+    display: grid;
+    gap: .5rem;
+    margin-top: .5rem;
+}
+
+.mensagem-erro {
+    margin: 0;
+    padding: .65rem .85rem;
+    border-radius: 10px;
+    background: #fdeeee;
+    color: #a32121;
+    font-size: .88rem;
+}
+
+/* ---------- Mobile: sidebar vira bloco no topo ---------- */
+@media (max-width: 900px) {
+    .catalogo-layout { grid-template-columns: 1fr; }
+    .filtros { position: static; max-height: none; }
+}
+/* Inputs usam o nível interno em vez do fundo da página */
+.filtros input,
+.filtros select {
+    background: var(--surface-2);
+}
+
+/* Separação sutil: borda + sombra curta */
+.veiculo-card,
+.filtros,
+.avaliacoes {
+    border-color: var(--line);
+    box-shadow: 0 1px 2px rgba(12, 26, 36, .05),
+                0 4px 12px rgba(12, 26, 36, .04);
+}
+
+.veiculo-card:hover {
+    border-color: var(--volt);
+    box-shadow: 0 8px 24px rgba(12, 26, 36, .10);
+}
+
+/* Preço com mais contraste */
+.veiculo-card__preco { color: #007a59; }
+/* ---------- Container largo ---------- */
+.container--wide {
+    max-width: none;
+    padding-inline: clamp(1rem, 2.5vw, 2rem);
+}
+
+/* ---------- Layout: filtro na borda + catálogo ocupando o resto ---------- */
+.catalogo-layout {
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 1.5rem;
+}
+
+/* ---------- Um card por linha ---------- */
+.catalogo__lista {
+    grid-template-columns: 1fr;
+}
+
+/* ---------- Cards e filtro no estilo do header ---------- */
+.veiculo-card,
+.filtros {
+    --surface: var(--black);          /* #0a0a0a, igual ao header */
+    --surface-2: #161616;             /* "preto mais claro" da caixa de busca */
+    --ink: var(--on-black);           /* #f2f2f2 */
+    --ink-soft: var(--on-black-soft); /* #9a9a9a */
+    --line: var(--black-line);        /* #242424 */
+
+    background: var(--surface);
+    color: var(--ink);
+    border-color: var(--line);
+    color-scheme: dark; /* select, setinhas dos inputs numéricos e scrollbar ficam escuros */
+}
+
+/* Card */
+.veiculo-card__media { background: var(--surface-2); }
+.veiculo-card__preco { color: var(--volt); }
+
+.veiculo-card .btn--outline {
+    --btn-bg-hover: #1d1d1d;
+    --btn-ink-hover: #fff;
+}
+
+/* Filtro: campos iguais à caixa de busca do header */
+.filtros input,
+.filtros select {
+    background: var(--surface-2);
+    border-color: var(--line);
+    color: var(--ink);
+}
+
+.filtros input::placeholder { color: var(--ink-soft); }
+
+.filtros input:focus,
+.filtros select:focus {
+    background: #1d1d1d;
+    border-color: var(--volt);
+    box-shadow: 0 0 0 4px rgba(0, 195, 137, .2);
+}
+
+.filtros .btn--outline {
+    --btn-bg-hover: #1d1d1d;
+    --btn-ink-hover: #fff;
+}
+
+.filtros .mensagem-erro {
+    background: rgba(255, 90, 90, .12);
+    color: #ff9b9b;
+}
+
+/* Sombras mais discretas sobre o fundo claro */
+.veiculo-card,
+.filtros {
+    box-shadow: 0 2px 8px rgba(12, 26, 36, .12);
+}
+.veiculo-card:hover {
+    box-shadow: 0 10px 28px rgba(12, 26, 36, .22);
+}

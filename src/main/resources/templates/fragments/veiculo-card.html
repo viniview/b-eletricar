@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<article class="veiculo-card" th:fragment="card(veiculo)">
+    <a class="veiculo-card__media" th:href="@{/veiculos/{id}(id=${veiculo.id})}" tabindex="-1" aria-hidden="true">
+        <img class="veiculo-card__foto"
+             th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(veiculo.fotoUrl) ? 'default.jpg' : veiculo.fotoUrl})}"
+             th:alt="${veiculo.marca + ' ' + veiculo.modelo}"
+             loading="lazy">
+    </a>
+
+    <div class="veiculo-card__body">
+        <p class="veiculo-card__marca" th:text="${veiculo.marca}">Marca</p>
+        <h3 class="veiculo-card__titulo" th:text="${veiculo.modelo}">Modelo</h3>
+
+        <p class="veiculo-card__preco"
+           th:text="${veiculo.preco != null ? #numbers.formatCurrency(veiculo.preco) : 'Preço sob consulta'}">R$ 0,00</p>
+
+        <ul class="veiculo-card__specs">
+            <li th:if="${veiculo.autonomiaKm != null}">
+                <strong th:text="${veiculo.autonomiaKm}">0</strong> km autonomia
+            </li>
+            <li th:if="${veiculo.potenciaCv != null}">
+                <strong th:text="${veiculo.potenciaCv}">0</strong> cv
+            </li>
+            <li th:if="${veiculo.capacidadeBateriaKwh != null}">
+                <strong th:text="${veiculo.capacidadeBateriaKwh}">0</strong> kWh
+            </li>
+        </ul>
+
+        <div class="veiculo-card__acoes">
+            <a class="btn btn--sm" th:href="@{/veiculos/{id}(id=${veiculo.id})}">Ver detalhes</a>
+            <a class="btn btn--sm btn--outline" th:href="@{/veiculos/{id}/fornecedor(id=${veiculo.id})}">Acessar fornecedor</a>
+        </div>
+    </div>
+</article>
+
+</body>
+</html>

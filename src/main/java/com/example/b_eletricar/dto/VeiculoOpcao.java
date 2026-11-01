@@ -5,5 +5,6 @@ public record VeiculoOpcao(
         String marca,
         String modelo,
         String carroceria,
-        Double preco) {
+        Double preco,
+        String fotoUrl) {
 }

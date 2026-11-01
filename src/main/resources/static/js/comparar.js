@@ -134,6 +134,13 @@
             ? "Preço não informado"
             : new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })
                 .format(car.preco);
+        const foto = slot.querySelector("[data-slot-foto]");
+        if (foto) {
+            foto.src = car.fotoUrl
+                ? `/images/carros/${car.fotoUrl}`
+                : "/images/carros/default.jpg";
+            foto.alt = `${car.marca} ${car.model}`;
+        }
         slot.classList.add("comparison-card--filled");
         slot.querySelector('[data-action="selecionar"]').textContent = "Trocar veículo";
         slot.querySelector('[data-action="remover"]').hidden = false;

@@ -21,6 +21,7 @@
             <table class="admin-table">
                 <thead>
                     <tr>
+                        <th scope="col">Foto</th>
                         <th scope="col">Marca</th>
                         <th scope="col">Modelo</th>
                         <th scope="col">Carroceria</th>
@@ -33,6 +34,12 @@
                 </thead>
                 <tbody>
                     <tr th:each="v : ${veiculos}">
+                        <td>
+                            <img class="veiculo-foto veiculo-foto--thumb"
+                                 th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(v.fotoUrl) ? 'default.jpg' : v.fotoUrl})}"
+                                 th:alt="${v.marca + ' ' + v.modelo}"
+                                 loading="lazy">
+                        </td>
                         <td th:text="${v.marca}">Marca</td>
                         <td th:text="${v.modelo}">Modelo</td>
                         <td>
