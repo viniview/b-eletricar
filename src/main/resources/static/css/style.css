@@ -238,6 +238,7 @@ main { flex: 1; }
 }
 
 .avaliacoes__item h3,
+.avaliacoes__item h4,
 .avaliacoes__item p {
     margin: 0 0 .4rem;
 }

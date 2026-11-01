@@ -26,6 +26,18 @@
     margin-top: 2rem;
 }
 
+/* ---------- Coluna: card + avaliações na comparação ---------- */
+.vcd-coluna {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    min-width: 0;
+}
+
+.vcd-coluna .avaliacoes {
+    margin-top: 0;
+}
+
 /* ---------- Card ---------- */
 .vcd {
     --surface: var(--black);

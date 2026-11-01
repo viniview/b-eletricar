@@ -167,6 +167,34 @@ class VeiculoUserFeaturesTest {
     }
 
     @Test
+    @WithMockUser(username = "ana@example.com", roles = "USER")
+    void comparacaoExibeAvaliacoesEDebaixoDoCard() throws Exception {
+        Veiculo primeiro = veiculo(1L, "BYD", "Dolphin");
+        Veiculo segundo = veiculo(2L, "Renault", "Kwid");
+        Usuario autor = new Usuario();
+        autor.setNome("Ana");
+        Comentario comentario = new Comentario();
+        comentario.setAutor(autor);
+        comentario.setVeiculo(primeiro);
+        comentario.setNota(5);
+        comentario.setTexto("Bateria excelente para o dia a dia");
+        comentario.setDataCriacao(LocalDateTime.of(2026, 10, 30, 12, 0));
+        when(veiculoService.buscarVeiculoPorId(1L)).thenReturn(Optional.of(primeiro));
+        when(veiculoService.buscarVeiculoPorId(2L)).thenReturn(Optional.of(segundo));
+        when(comparador.comparar(List.of(primeiro, segundo))).thenReturn(List.of());
+        when(avaliacaoService.listarPorVeiculo(1L)).thenReturn(List.of(comentario));
+        when(avaliacaoService.media(List.of(comentario))).thenReturn(5.0);
+
+        mockMvc.perform(get("/comparar").param("carro1", "1").param("carro2", "2"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Avaliações dos usuários")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Bateria excelente para o dia a dia")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Nota média")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Avaliar este veículo")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Este veículo ainda não recebeu avaliações.")));
+    }
+
+    @Test
     @WithAnonymousUser
     void visitanteNaoPodeEnviarAvaliacaoEPostSemCsrfRetorna403() throws Exception {
         mockMvc.perform(post("/veiculos/1/avaliacoes")

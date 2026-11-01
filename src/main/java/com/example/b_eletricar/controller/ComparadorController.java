@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.b_eletricar.database.model.Comentario;
 import com.example.b_eletricar.database.model.Veiculo;
 import com.example.b_eletricar.dto.VeiculoOpcao;
+import com.example.b_eletricar.services.AvaliacaoService;
 import com.example.b_eletricar.services.Comparar;
 import com.example.b_eletricar.services.VeiculoService;
 
@@ -20,10 +22,13 @@ public class ComparadorController {
 
     private final VeiculoService veiculoService;
     private final Comparar comparador;
+    private final AvaliacaoService avaliacaoService;
 
-    public ComparadorController(VeiculoService veiculoService, Comparar comparador) {
+    public ComparadorController(VeiculoService veiculoService, Comparar comparador,
+                                AvaliacaoService avaliacaoService) {
         this.veiculoService = veiculoService;
         this.comparador = comparador;
+        this.avaliacaoService = avaliacaoService;
     }
 
     @GetMapping("/comparar")
@@ -63,9 +68,9 @@ public class ComparadorController {
         }
 
         List<Slot> slots = List.of(
-                new Slot(1, "Primeiro carro", veiculosPorSlot[0]),
-                new Slot(2, "Segundo carro", veiculosPorSlot[1]),
-                new Slot(3, "Terceiro carro", veiculosPorSlot[2]));
+                criarSlot(1, "Primeiro carro", veiculosPorSlot[0]),
+                criarSlot(2, "Segundo carro", veiculosPorSlot[1]),
+                criarSlot(3, "Terceiro carro", veiculosPorSlot[2]));
         model.addAttribute("slots", slots);
         model.addAttribute("podeComparar", selecionados.size() >= 2 && erro == null);
         model.addAttribute("resultados", selecionados.size() >= 2 && erro == null
@@ -88,6 +93,18 @@ public class ComparadorController {
                 .toList();
     }
 
-    public record Slot(int numero, String titulo, Veiculo veiculo) {
+    private Slot criarSlot(int numero, String titulo, Veiculo veiculo) {
+        if (veiculo == null) {
+            return new Slot(numero, titulo, null, List.of(), null);
+        }
+        List<Comentario> comentarios = avaliacaoService.listarPorVeiculo(veiculo.getId());
+        if (comentarios == null || comentarios.isEmpty()) {
+            return new Slot(numero, titulo, veiculo, List.of(), null);
+        }
+        return new Slot(numero, titulo, veiculo, comentarios, avaliacaoService.media(comentarios));
+    }
+
+    public record Slot(int numero, String titulo, Veiculo veiculo,
+                       List<Comentario> comentarios, Double media) {
     }
 }
