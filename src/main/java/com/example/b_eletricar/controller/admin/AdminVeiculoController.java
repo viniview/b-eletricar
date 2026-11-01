@@ -1,5 +1,9 @@
 package com.example.b_eletricar.controller.admin;
 
+//j
+import java.util.List;
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +32,7 @@ public class AdminVeiculoController {
         this.veiculoService = veiculoService;
         this.fornecedorService = fornecedorService;
     }
+
 
     @GetMapping("")
     public String listar(Model model) {

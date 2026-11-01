@@ -35,4 +35,12 @@ public class Veiculo {
     @ManyToOne
     @JoinColumn(name = "fornecedor_id")
     private Fornecedor fornecedor;
+
+    public String getFotoCaminho() {
+        if (fotoUrl == null || fotoUrl.isBlank()) {
+            return "/images/carros/default.jpg";
+        }
+        return fotoUrl.startsWith("/") ? fotoUrl : "/images/carros/" + fotoUrl;
+    }
+
 }

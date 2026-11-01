@@ -21,6 +21,7 @@
             <table class="admin-table">
                 <thead>
                     <tr>
+                        <th scope="col">Foto</th>
                         <th scope="col">Marca</th>
                         <th scope="col">Modelo</th>
                         <th scope="col">Carroceria</th>
@@ -33,6 +34,9 @@
                 </thead>
                 <tbody>
                     <tr th:each="v : ${veiculos}">
+                        <td>
+                           <img class="admin-table__thumb" alt="" th:src="@{${v.fotoCaminho}}">
+                        </td>                       
                         <td th:text="${v.marca}">Marca</td>
                         <td th:text="${v.modelo}">Modelo</td>
                         <td>

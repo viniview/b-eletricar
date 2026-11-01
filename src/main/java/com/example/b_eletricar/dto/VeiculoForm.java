@@ -1,5 +1,8 @@
 package com.example.b_eletricar.dto;
 
+//j
+import jakarta.validation.constraints.Pattern;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,6 +45,11 @@ public class VeiculoForm {
 
     @Positive(message = "O tempo de carga deve ser maior que zero")
     private Double tempoCargaHoras;
+
+
+    private org.springframework.web.multipart.MultipartFile foto;
+    private String fotoAtual; 
+
 
     @NotNull(message = "Selecione um fornecedor")
     private Long fornecedorId;

@@ -21,7 +21,7 @@
         </div>
 
         <div class="admin-form">
-            <form class="auth__form" th:object="${form}" method="post"
+            <form class="auth__form" th:object="${form}" method="post" enctype="multipart/form-data"
                   th:action="${modo == 'editar'} ? @{/admin/veiculos/{id}(id=${veiculoId})}
                                                   : @{/admin/veiculos}">
 
@@ -114,6 +114,27 @@
                         <p class="auth__msg auth__msg--error" th:if="${#fields.hasErrors('tempoCargaHoras')}"
                            th:errors="*{tempoCargaHoras}"></p>
                     </div>
+                </fieldset>
+
+                <fieldset class="admin-form__group">
+                    <legend class="admin-form__group-title">Foto</legend>
+
+                    <div class="field">
+                        <label class="field__label" for="foto">Enviar nova foto (JPG, PNG ou WEBP, até 5 MB)</label>
+                        <input class="field__input" id="foto" name="foto" type="file" accept="image/jpeg,image/png,image/webp">
+                        <input type="hidden" th:field="*{fotoAtual}">
+                        <img id="fotoPreview" class="admin-foto-preview" alt="Pré-visualização da foto"
+                            th:src="@{${form.fotoAtual != null ? form.fotoAtual : '/images/carros/default.jpg'}}">
+                    </div>
+                    <script>
+                        document.getElementById('foto').addEventListener('change', function () {
+                            var arquivo = this.files[0];
+                            if (arquivo) {
+                                document.getElementById('fotoPreview').src = URL.createObjectURL(arquivo);
+                            }
+                        });
+                    </script>
+
                 </fieldset>
 
                 <div class="admin-form__actions">
