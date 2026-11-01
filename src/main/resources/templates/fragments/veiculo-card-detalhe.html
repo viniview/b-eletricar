@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+<article th:fragment="cardDetalhe(veiculo, compacto)"
+         class="vcd"
+         th:classappend="${compacto} ? 'vcd--compacto'"
+         th:object="${veiculo}">
+
+    <img class="vcd__foto"
+         th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(veiculo.fotoUrl) ? 'default.jpg' : veiculo.fotoUrl})}"
+         th:alt="${veiculo.marca + ' ' + veiculo.modelo}"
+         loading="lazy">
+
+    <div class="vcd__corpo">
+        <header class="vcd__cabecalho">
+            <p class="vcd__marca" th:text="*{marca}">Marca</p>
+
+            <h1 class="vcd__titulo" th:if="${!compacto}" th:text="*{modelo}">Modelo</h1>
+            <h3 class="vcd__titulo" th:if="${compacto}" th:text="*{modelo}">Modelo</h3>
+
+            <p class="vcd__preco"
+               th:text="*{preco != null ? #numbers.formatCurrency(preco) : 'Preço não informado'}">
+                R$ 0,00
+            </p>
+        </header>
+
+        <div class="vcd__specs" role="region" tabindex="0"
+             th:attr="aria-label=${'Especificações: ' + veiculo.marca + ' ' + veiculo.modelo}">
+            <table class="vcd-spec">
+                <caption class="visually-hidden">Especificações do veículo</caption>
+                <thead>
+                <tr>
+                    <th scope="col">Atributo</th>
+                    <th scope="col">Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">Carroceria</th>
+                    <td th:text="*{carroceria != null ? carroceria : 'Não informada'}"
+                        th:classappend="*{carroceria == null} ? 'vcd-spec__vazio'">SUV</td>
+                </tr>
+                <tr>
+                    <th scope="row">Autonomia</th>
+                    <td th:text="*{autonomiaKm != null ? autonomiaKm + ' km' : 'Não informada'}"
+                        th:classappend="*{autonomiaKm == null} ? 'vcd-spec__vazio'">0 km</td>
+                </tr>
+                <tr>
+                    <th scope="row">Bateria</th>
+                    <td th:text="*{capacidadeBateriaKwh != null ? capacidadeBateriaKwh + ' kWh' : 'Não informada'}"
+                        th:classappend="*{capacidadeBateriaKwh == null} ? 'vcd-spec__vazio'">0 kWh</td>
+                </tr>
+                <tr>
+                    <th scope="row">Potência</th>
+                    <td th:text="*{potenciaCv != null ? potenciaCv + ' cv' : 'Não informada'}"
+                        th:classappend="*{potenciaCv == null} ? 'vcd-spec__vazio'">0 cv</td>
+                </tr>
+                <tr>
+                    <th scope="row">Recarga</th>
+                    <td th:text="*{tempoCargaHoras != null ? tempoCargaHoras + ' horas' : 'Não informado'}"
+                        th:classappend="*{tempoCargaHoras == null} ? 'vcd-spec__vazio'">0 horas</td>
+                </tr>
+                <tr>
+                    <th scope="row">Fornecedor</th>
+                    <td th:text="*{fornecedor != null ? fornecedor.nome : 'Não informado'}"
+                        th:classappend="*{fornecedor == null} ? 'vcd-spec__vazio'">Fornecedor</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="vcd__acoes"
+             th:if="*{fornecedor != null and fornecedor.site != null and !#strings.isEmpty(fornecedor.site)}">
+            <a class="btn btn--sm"
+               th:href="@{/veiculos/{id}/fornecedor(id=*{id})}"
+               target="_blank" rel="noopener">
+                Visitar site do fornecedor
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+        </div>
+    </div>
+</article>
+
+</body>
+</html>

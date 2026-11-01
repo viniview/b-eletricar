@@ -1,13 +1,117 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
 <head>
     <title>Eletrocar | Início</title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <main class="page container">
-        <h1 class="page__title">Encontre seu próximo carro elétrico</h1>
-        <p class="page__lead">Compare modelos, autonomia e preços em um só lugar.</p>
-    </main>
+<main class="page container container--wide">
+
+    <section class="page__intro">
+        <h1 class="page__title">Compare modelos, autonomia e preços em um só lugar.</h1>
+    </section>
+
+    <div class="catalogo-layout">
+        <aside class="filtros" aria-label="Filtros de busca">
+            <details class="filtros__details" open>
+                <summary class="filtros__titulo">Filtrar veículos</summary>
+
+                <form class="filtros__form" th:action="@{/veiculos/listagem}" method="get">
+
+                    <div class="campo">
+                        <label for="palavraChaveFiltro">Palavra-chave</label>
+                        <input type="text" id="palavraChaveFiltro" name="palavraChave"
+                            th:value="${param.palavraChave}" placeholder="Ex.: BYD ou Dolphin Mini">
+                    </div>
+
+                    <div class="campo">
+                        <label for="marca">Marca</label>
+                        <input type="text" id="marca" name="marca" th:value="${param.marca}" placeholder="Ex.: BYD">
+                    </div>
+
+                    <div class="campo">
+                        <label for="modelo">Modelo</label>
+                        <input type="text" id="modelo" name="modelo" th:value="${param.modelo}" placeholder="Ex.: Dolphin">
+                    </div>
+
+                    <div class="campo">
+                        <label for="carroceria">Carroceria</label>
+                        <select id="carroceria" name="carroceria">
+                            <option value="">Todas</option>
+                            <option value="SUV"   th:selected="${param.carroceria != null and param.carroceria[0] == 'SUV'}">SUV</option>
+                            <option value="Sedan" th:selected="${param.carroceria != null and param.carroceria[0] == 'Sedan'}">Sedan</option>
+                            <option value="Hatch" th:selected="${param.carroceria != null and param.carroceria[0] == 'Hatch'}">Hatch</option>
+                        </select>
+                    </div>
+
+                    <fieldset class="campo-faixa">
+                        <legend>Preço (R$)</legend>
+                        <input type="number" id="precoMin" name="precoMin" min="0" step="0.01"
+                            placeholder="Mín." aria-label="Preço mínimo" th:value="${param.precoMin}">
+                        <input type="number" id="precoMax" name="precoMax" min="0" step="0.01"
+                            placeholder="Máx." aria-label="Preço máximo" th:value="${param.precoMax}">
+                    </fieldset>
+
+                    <fieldset class="campo-faixa">
+                        <legend>Autonomia (km)</legend>
+                        <input type="number" id="autonomiaKmMin" name="autonomiaKmMin" min="0"
+                            placeholder="Mín." aria-label="Autonomia mínima" th:value="${param.autonomiaKmMin}">
+                        <input type="number" id="autonomiaKmMax" name="autonomiaKmMax" min="0"
+                            placeholder="Máx." aria-label="Autonomia máxima" th:value="${param.autonomiaKmMax}">
+                    </fieldset>
+
+                    <fieldset class="campo-faixa">
+                        <legend>Bateria (kWh)</legend>
+                        <input type="number" id="capacidadeBateriaKwhMin" name="capacidadeBateriaKwhMin" min="0" step="0.1"
+                            placeholder="Mín." aria-label="Capacidade mínima da bateria" th:value="${param.capacidadeBateriaKwhMin}">
+                        <input type="number" id="capacidadeBateriaKwhMax" name="capacidadeBateriaKwhMax" min="0" step="0.1"
+                            placeholder="Máx." aria-label="Capacidade máxima da bateria" th:value="${param.capacidadeBateriaKwhMax}">
+                    </fieldset>
+
+                    <fieldset class="campo-faixa">
+                        <legend>Potência (cv)</legend>
+                        <input type="number" id="potenciaCvMin" name="potenciaCvMin" min="0"
+                            placeholder="Mín." aria-label="Potência mínima" th:value="${param.potenciaCvMin}">
+                        <input type="number" id="potenciaCvMax" name="potenciaCvMax" min="0"
+                            placeholder="Máx." aria-label="Potência máxima" th:value="${param.potenciaCvMax}">
+                    </fieldset>
+
+                    <fieldset class="campo-faixa">
+                        <legend>Tempo de carga (horas)</legend>
+                        <input type="number" id="tempoCargaHorasMin" name="tempoCargaHorasMin" min="0" step="0.1"
+                            placeholder="Mín." aria-label="Tempo mínimo de carga" th:value="${param.tempoCargaHorasMin}">
+                        <input type="number" id="tempoCargaHorasMax" name="tempoCargaHorasMax" min="0" step="0.1"
+                            placeholder="Máx." aria-label="Tempo máximo de carga" th:value="${param.tempoCargaHorasMax}">
+                    </fieldset>
+
+                    <p class="mensagem-erro" th:if="${erro != null}" th:text="${erro}" role="alert"></p>
+
+                    <div class="filtros__acoes">
+                        <button class="btn btn--block" type="submit">Filtrar</button>
+                        <a class="btn btn--outline btn--block" th:href="@{/veiculos/listagem}">Limpar filtros</a>
+                    </div>
+                </form>
+            </details>
+        </aside>
+
+        <section class="catalogo">
+            <h2 class="eletricos_home">Catálogo de carros elétricos</h2>
+
+            <div class="catalogo__lista">
+                <th:block th:each="veiculo : ${veiculos}">
+                    <div th:replace="~{fragments/veiculo-card :: card(${veiculo})}"></div>
+                </th:block>
+            </div>
+
+            <p th:if="${#lists.isEmpty(veiculos) and erro == null}">
+                Nenhum veículo encontrado com os filtros informados.
+            </p>
+        </section>
+
+    </div>
+</main>
 </body>
 </html>

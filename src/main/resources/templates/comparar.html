@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
+    <head>
+        <title>Eletrocar | Comparar veículos</title>
+    </head>
+    <body>
+        
+        <main class="page container comparison">
+            <link rel="stylesheet" th:href="@{/css/comparar.css}">
+            <link rel="stylesheet" th:href="@{/css/veiculo-card-detalhe.css}">
+
+            <header class="comparison__intro">
+                <p class="comparison__eyebrow">Escolha com mais confiança</p>
+                <h1 class="page__title">Compare carros elétricos</h1>
+                <p class="page__lead">
+                    Selecione dois ou três veículos e descubra qual se destaca em cada atributo.
+                </p>
+            </header>
+
+            <p class="comparison__message comparison__message--error" role="alert"
+            th:if="${erro}" th:text="${erro}"></p>
+            <p class="comparison__message comparison__message--success" role="status"
+            th:if="${sucesso}" th:text="${sucesso}"></p>
+
+            <form id="comparison-form" class="comparison__form"
+                th:action="@{/comparar}" method="get"
+                th:data-api-url="@{/api/comparador}">
+
+                <section aria-labelledby="slots-titulo">
+                    <h2 id="slots-titulo" class="visually-hidden">Veículos selecionados</h2>
+
+                    <div class="comparison__cards">
+                        <article class="comparison-card"
+                                th:each="slot : ${slots}"
+                                th:with="v=${slot.veiculo}"
+                                th:classappend="${(v != null ? 'comparison-card--filled ' : '') + (slot.numero > 2 ? 'comparison-card--optional' : '')}"
+                                th:data-slot="${slot.numero}">
+
+                            <header class="comparison-card__header">
+                                <span class="comparison-card__number" th:text="${'0' + slot.numero}">01</span>
+                                <h3>
+                                    <span th:text="${slot.titulo}">Primeiro carro</span>
+                                </h3>
+                            </header>
+
+                            <input type="hidden" th:name="${'carro' + slot.numero}" th:value="${v?.id}">
+
+                            <div class="comparison-card__body" aria-live="polite">
+                                <p class="comparison-card__empty" data-slot-empty th:hidden="${v != null}">
+                                    Nenhum veículo selecionado.
+                                </p>
+                                <div data-slot-filled th:hidden="${v == null}">
+                                    <img class="veiculo-foto veiculo-foto--thumb"
+                                         data-slot-foto
+                                         th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(v?.fotoUrl) ? 'default.jpg' : v.fotoUrl})}"
+                                         th:alt="${v != null ? v.marca + ' ' + v.modelo : ''}"
+                                         loading="lazy">
+                                    <p class="comparison-card__meta" data-slot-marca th:text="${v?.marca}"></p>
+                                    <p class="comparison-card__name" data-slot-modelo th:text="${v?.modelo}"></p>
+                                    <p class="comparison-card__meta" data-slot-categoria th:text="${v?.carroceria}"></p>
+                                    <p class="comparison-card__price" data-slot-preco
+                                    th:text="${v != null and v.preco != null ? #numbers.formatDecimal(v.preco, 1, 'POINT', 0, 'COMMA') : ''}"></p>
+                                </div>
+                            </div>
+
+                            <footer class="comparison-card__footer">
+                                <button type="button" class="comparison-card__select" data-action="selecionar"
+                                        th:text="${v == null} ? 'Selecionar veículo' : 'Trocar veículo'">
+                                    Selecionar veículo
+                                </button>
+                                <button type="button" class="comparison-card__remove" data-action="remover"
+                                        th:hidden="${v == null}">
+                                    Remover
+                                </button>
+                            </footer>
+                        </article>
+                    </div>
+                </section>
+
+                <footer class="comparison__actions">
+                    <button class="comparison__button" type="submit" id="comparison-submit"
+                            aria-describedby="comparison-hint"
+                            th:disabled="${!podeComparar}">
+                        Comparar veículos
+                        <span aria-hidden="true">&rarr;</span>
+                    </button>
+                    <p id="comparison-hint">Selecione ao menos 2 carros para comparar.</p>
+                </footer>
+            </form>
+
+            <dialog id="picker" class="picker" aria-labelledby="picker-titulo">
+                <header class="picker__header">
+                    <h2 id="picker-titulo" class="picker__title">Adicionar carro</h2>
+                    <button type="button" class="picker__close" data-picker-close aria-label="Fechar">&times;</button>
+                </header>
+
+                <label class="visually-hidden" for="picker-busca">Buscar marca ou modelo</label>
+                <input id="picker-busca" class="picker__search" type="search"
+                    placeholder="Buscar marca ou modelo" maxlength="60" autocomplete="off">
+
+                <div class="picker__filters">
+                    <label for="picker-marca">Marca</label>
+                    <select id="picker-marca"><option value="">Todas as marcas</option></select>
+                    <label for="picker-modelo">Modelo</label>
+                    <select id="picker-modelo" disabled><option value="">Todos os modelos</option></select>
+                    <label for="picker-carroceria">Carroceria</label>
+                    <select id="picker-carroceria"><option value="">Todas</option></select>
+                </div>
+
+                <p id="picker-status" class="picker__status" role="status"></p>
+                <ul id="picker-resultados" class="picker__results"></ul>
+            </dialog>
+
+            <section class="comparison-results" id="resultado" th:if="${resultados != null}"
+                    aria-labelledby="resultado-titulo">
+                <header class="comparison-results__heading">
+                    <p class="comparison__eyebrow">Análise lado a lado</p>
+                    <h2 id="resultado-titulo">Resultado da comparação</h2>
+                    <p>Compare as especificações de cada veículo, uma ao lado da outra.</p>
+                </header>
+
+                <div class="vcd-grid">
+                    <div class="vcd-coluna" th:each="slot : ${slots}" th:if="${slot.veiculo != null}">
+                        <div th:replace="~{fragments/veiculo-card-detalhe :: cardDetalhe(${slot.veiculo}, true)}"></div>
+
+                        <section class="avaliacoes"
+                                 th:attr="aria-labelledby=${'avaliacoes-titulo-' + slot.numero}">
+                            <h3 th:id="${'avaliacoes-titulo-' + slot.numero}">Avaliações dos usuários</h3>
+                            <p th:if="${slot.media != null}">
+                                Nota média:
+                                <strong th:text="${#numbers.formatDecimal(slot.media, 1, 1)}">0,0</strong>
+                                / 5 (<span th:text="${#lists.size(slot.comentarios)}">0</span> avaliações)
+                            </p>
+                            <p th:if="${slot.media == null and #lists.isEmpty(slot.comentarios)}">
+                                Este veículo ainda não recebeu avaliações.
+                            </p>
+                            <p th:if="${slot.media == null and !#lists.isEmpty(slot.comentarios)}">
+                                Ainda não há notas para as avaliações deste veículo.
+                            </p>
+
+                            <div class="avaliacoes__lista" th:if="${!#lists.isEmpty(slot.comentarios)}">
+                                <article class="avaliacoes__item" th:each="comentario : ${slot.comentarios}">
+                                    <h4 th:text="${comentario.autor.nome}">Usuário</h4>
+                                    <p class="avaliacoes__nota" th:if="${comentario.nota != null}">
+                                        <span th:each="estrela : ${#numbers.sequence(1, comentario.nota)}"
+                                              aria-hidden="true">&#9733;</span>
+                                        <span class="visually-hidden"
+                                              th:text="${comentario.nota + ' de 5 estrelas'}"></span>
+                                    </p>
+                                    <p th:text="${comentario.texto}">Comentário sobre o veículo.</p>
+                                    <time th:if="${comentario.dataCriacao != null}"
+                                          th:datetime="${comentario.dataCriacao}"
+                                          th:text="${#temporals.format(comentario.dataCriacao, 'dd/MM/yyyy HH:mm')}">
+                                        Data
+                                    </time>
+                                </article>
+                            </div>
+
+                            <a class="btn btn--outline btn--sm"
+                               th:href="@{/veiculos/{id}(id=${slot.veiculo.id})}">
+                                Avaliar este veículo
+                                <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <script th:src="@{/js/comparar.js}" defer></script>
+        </main>
+    </body>
+</html>

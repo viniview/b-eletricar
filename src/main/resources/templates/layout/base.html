@@ -12,13 +12,17 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <header th:replace="~{fragments/header :: header}"></header>
+    <header th:replace="~{fragments/header :: header}">
+        <!-- Conteúdo do cabeçalho -->
+    </header>
 
     <main class="page" th:replace="${content}">
         <!-- conteúdo da página entra aqui -->
     </main>
 
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
+    <footer th:replace="~{fragments/footer :: footer}">
+        <!-- Conteúdo do rodapé -->
+    </footer>
 
     <script th:src="@{/js/main.js}"></script>
 </body>

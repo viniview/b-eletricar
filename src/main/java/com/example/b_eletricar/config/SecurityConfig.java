@@ -2,6 +2,7 @@ package com.example.b_eletricar.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -46,6 +47,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/error", "/login", "/cadastro",
                                  "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
+                .requestMatchers("/veiculos/listagem").permitAll()
+                .requestMatchers(HttpMethod.GET, "/veiculos/{id}", "/veiculos/{id}/fornecedor").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")

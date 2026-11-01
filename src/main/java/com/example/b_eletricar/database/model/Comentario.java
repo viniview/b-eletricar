@@ -18,6 +18,9 @@ public class Comentario {
     @Column(nullable = false, length = 1000)
     private String texto;
 
+    @Column
+    private Integer nota;
+
     @Column(nullable = false)
     private LocalDateTime dataCriacao;
 

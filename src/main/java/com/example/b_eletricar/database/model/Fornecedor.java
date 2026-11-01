@@ -1,16 +1,17 @@
 package com.example.b_eletricar.database.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.Setter; 
+import lombok.AllArgsConstructor;  
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "fornecedor")
-@Getter @Setter
-
+@Getter @Setter 
+@AllArgsConstructor 
+@NoArgsConstructor
 public class Fornecedor {
 
     @Id
