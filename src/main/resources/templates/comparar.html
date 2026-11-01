@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout/base :: layout(~{::title}, ~{::main})}">
     <head>
         <title>Eletrocar | Comparar veículos</title>
@@ -203,7 +204,7 @@
                         </tbody>
                     </table>
                 </div>
-
+                
             </section>
             <script th:src="@{/js/comparar.js}" defer></script>
         </main>

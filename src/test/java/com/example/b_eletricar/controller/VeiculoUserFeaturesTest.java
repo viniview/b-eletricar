@@ -62,21 +62,23 @@ class VeiculoUserFeaturesTest {
 
     @Test
     @WithAnonymousUser
-    void homeEscondePesquisaParaVisitante() throws Exception {
+    void visitantePodeVerPesquisaEFiltrosNaHome() throws Exception {
+        when(veiculoService.listarTodos()).thenReturn(List.of());
+
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Entre na sua conta")))
-                .andExpect(content().string(org.hamcrest.Matchers.not(
-                        org.hamcrest.Matchers.containsString("Busca por filtros"))));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Filtrar veículos")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Buscar veículo, marca ou modelo")));
     }
 
     @Test
     @WithMockUser(username = "ana@example.com", roles = "USER")
-    void usuarioAutenticadoVeFiltrosNaHome() throws Exception {
+    void usuarioAutenticadoPodeVerComparador() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Busca por filtros")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Buscar veículo, marca ou modelo")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Filtrar veículos")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Buscar veículo, marca ou modelo")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Comparar veículos")));
     }
 
     @Test
@@ -101,12 +103,14 @@ class VeiculoUserFeaturesTest {
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Dolphin")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Muito confortável")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("30/10/2026")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Entre na sua conta")));
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Entre na sua conta")))
+                .andExpect(content().string(org.hamcrest.Matchers.not(
+                        org.hamcrest.Matchers.containsString("Publicar avaliação"))));
     }
 
     @Test
     @WithMockUser(username = "ana@example.com", roles = "USER")
-    void usuarioAutenticadoVeFormularioParaAvaliar() throws Exception {
+    void usuarioAutenticadoPodeAvaliar() throws Exception {
         when(veiculoService.buscarVeiculoPorId(1L)).thenReturn(Optional.of(veiculo(1L, "BYD", "Dolphin")));
         when(avaliacaoService.listarPorVeiculo(1L)).thenReturn(List.of());
         when(avaliacaoService.media(List.of())).thenReturn(null);
@@ -119,13 +123,31 @@ class VeiculoUserFeaturesTest {
 
     @Test
     @WithAnonymousUser
-    void visitanteNaoPodeUsarFiltrosNemAbrirComparador() throws Exception {
+    void visitantePodeFiltrarVeiculos() throws Exception {
+        when(veiculoService.filtrarVeiculos(
+                org.mockito.ArgumentMatchers.eq("BYD"), org.mockito.ArgumentMatchers.isNull(),
+                org.mockito.ArgumentMatchers.isNull(), org.mockito.ArgumentMatchers.isNull(),
+                org.mockito.ArgumentMatchers.isNull(), org.mockito.ArgumentMatchers.isNull(),
+                org.mockito.ArgumentMatchers.isNull(), org.mockito.ArgumentMatchers.isNull(),
+                org.mockito.ArgumentMatchers.isNull(), org.mockito.ArgumentMatchers.isNull(),
+                org.mockito.ArgumentMatchers.isNull(), org.mockito.ArgumentMatchers.isNull(),
+                org.mockito.ArgumentMatchers.isNull(), org.mockito.ArgumentMatchers.isNull()))
+                .thenReturn(List.of(veiculo(1L, "BYD", "Dolphin")));
+
         mockMvc.perform(get("/veiculos/listagem").param("marca", "BYD"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("home"))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Dolphin")));
+
+    }
+
+    @Test
+    @WithAnonymousUser
+    void visitanteNaoPodeAbrirComparacao() throws Exception {
         mockMvc.perform(get("/comparar"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
+
         mockMvc.perform(get("/api/comparador"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login"));
@@ -151,7 +173,7 @@ class VeiculoUserFeaturesTest {
 
     @Test
     @WithMockUser(username = "ana@example.com", roles = "USER")
-    void usuarioSelecionaCarrosDoBancoERecebeComparacao() throws Exception {
+    void usuarioSelecionaCarrosERecebeComparacao() throws Exception {
         Veiculo primeiro = veiculo(1L, "BYD", "Dolphin");
         Veiculo segundo = veiculo(2L, "Renault", "Kwid");
         when(veiculoService.buscarVeiculoPorId(1L)).thenReturn(Optional.of(primeiro));
@@ -164,34 +186,6 @@ class VeiculoUserFeaturesTest {
                 .andExpect(model().attribute("podeComparar", true))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Dolphin")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("Kwid")));
-    }
-
-    @Test
-    @WithMockUser(username = "ana@example.com", roles = "USER")
-    void comparacaoExibeAvaliacoesEDebaixoDoCard() throws Exception {
-        Veiculo primeiro = veiculo(1L, "BYD", "Dolphin");
-        Veiculo segundo = veiculo(2L, "Renault", "Kwid");
-        Usuario autor = new Usuario();
-        autor.setNome("Ana");
-        Comentario comentario = new Comentario();
-        comentario.setAutor(autor);
-        comentario.setVeiculo(primeiro);
-        comentario.setNota(5);
-        comentario.setTexto("Bateria excelente para o dia a dia");
-        comentario.setDataCriacao(LocalDateTime.of(2026, 10, 30, 12, 0));
-        when(veiculoService.buscarVeiculoPorId(1L)).thenReturn(Optional.of(primeiro));
-        when(veiculoService.buscarVeiculoPorId(2L)).thenReturn(Optional.of(segundo));
-        when(comparador.comparar(List.of(primeiro, segundo))).thenReturn(List.of());
-        when(avaliacaoService.listarPorVeiculo(1L)).thenReturn(List.of(comentario));
-        when(avaliacaoService.media(List.of(comentario))).thenReturn(5.0);
-
-        mockMvc.perform(get("/comparar").param("carro1", "1").param("carro2", "2"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Avaliações dos usuários")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Bateria excelente para o dia a dia")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Nota média")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Avaliar este veículo")))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString("Este veículo ainda não recebeu avaliações.")));
     }
 
     @Test

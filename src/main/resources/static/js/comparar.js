@@ -29,7 +29,7 @@
             .filter((input) => input.value).length;
         submit.disabled = selectedCount < 2;
         hint.textContent = selectedCount < 2
-            ? "Selecione ao menos 2 carros para comparar (máximo de 3)."
+            ? "Selecione ao menos 2 carros para comparar."
             : `${selectedCount} veículo(s) selecionado(s).`;
     }
 

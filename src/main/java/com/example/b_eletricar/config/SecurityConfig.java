@@ -47,8 +47,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/error", "/login", "/cadastro",
                                  "/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
-                .requestMatchers("/veiculos/listagem").permitAll()
                 .requestMatchers(HttpMethod.GET, "/veiculos/{id}", "/veiculos/{id}/fornecedor").permitAll()
+                .requestMatchers(HttpMethod.GET, "/veiculos/listagem").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
