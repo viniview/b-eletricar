@@ -204,7 +204,52 @@
                         </tbody>
                     </table>
                 </div>
-                
+
+                <div class="vcd-grid comparison-reviews">
+                    <section class="avaliacoes" th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                             th:attr="aria-labelledby=${'avaliacoes-titulo-' + slot.numero}">
+                        <h3 th:id="${'avaliacoes-titulo-' + slot.numero}">
+                            Avaliações dos usuários -
+                            <span th:text="${slot.veiculo.marca + ' ' + slot.veiculo.modelo}">veículo</span>
+                        </h3>
+                        <p th:if="${slot.media != null}">
+                            Nota média:
+                            <strong th:text="${#numbers.formatDecimal(slot.media, 1, 1)}">0,0</strong>
+                            / 5 (<span th:text="${#lists.size(slot.comentarios)}">0</span> avaliações)
+                        </p>
+                        <p th:if="${slot.media == null and #lists.isEmpty(slot.comentarios)}">
+                            Este veículo ainda não recebeu avaliações.
+                        </p>
+                        <p th:if="${slot.media == null and !#lists.isEmpty(slot.comentarios)}">
+                            Ainda não há notas para as avaliações deste veículo.
+                        </p>
+
+                        <div class="avaliacoes__lista" th:if="${!#lists.isEmpty(slot.comentarios)}">
+                            <article class="avaliacoes__item" th:each="comentario : ${slot.comentarios}">
+                                <h4 th:text="${comentario.autor.nome}">Usuário</h4>
+                                <p class="avaliacoes__nota" th:if="${comentario.nota != null}">
+                                    <span th:each="estrela : ${#numbers.sequence(1, comentario.nota)}"
+                                          aria-hidden="true">&#9733;</span>
+                                    <span class="visually-hidden"
+                                          th:text="${comentario.nota + ' de 5 estrelas'}"></span>
+                                </p>
+                                <p th:text="${comentario.texto}">Comentário sobre o veículo.</p>
+                                <time th:if="${comentario.dataCriacao != null}"
+                                      th:datetime="${comentario.dataCriacao}"
+                                      th:text="${#temporals.format(comentario.dataCriacao, 'dd/MM/yyyy HH:mm')}">
+                                    Data
+                                </time>
+                            </article>
+                        </div>
+
+                        <a class="btn btn--outline btn--sm"
+                           sec:authorize="isAuthenticated()"
+                           th:href="@{/veiculos/{id}(id=${slot.veiculo.id})}">
+                            Avaliar este veículo
+                            <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </section>
+                </div>
             </section>
             <script th:src="@{/js/comparar.js}" defer></script>
         </main>
