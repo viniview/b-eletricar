@@ -3,6 +3,8 @@ package com.example.b_eletricar.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,10 +73,13 @@ public class ComparadorController {
                 criarSlot(1, "Primeiro carro", veiculosPorSlot[0]),
                 criarSlot(2, "Segundo carro", veiculosPorSlot[1]),
                 criarSlot(3, "Terceiro carro", veiculosPorSlot[2]));
+        Map<Long, Double> mediasAvaliacoes = slots.stream()
+                .filter(slot -> slot.veiculo() != null && slot.media() != null)
+                .collect(Collectors.toMap(slot -> slot.veiculo().getId(), Slot::media));
         model.addAttribute("slots", slots);
         model.addAttribute("podeComparar", selecionados.size() >= 2 && erro == null);
         model.addAttribute("resultados", selecionados.size() >= 2 && erro == null
-                ? comparador.comparar(selecionados) : null);
+                ? comparador.compararComAvaliacoes(selecionados, mediasAvaliacoes) : null);
         model.addAttribute("erro", erro);
         return "comparar";
     }

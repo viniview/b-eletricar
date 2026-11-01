@@ -4,8 +4,10 @@ import com.example.b_eletricar.database.model.Veiculo;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -34,6 +36,15 @@ public class Comparar {
         );
     }
 
+    public List<ResultadoAtributo> compararComAvaliacoes(
+            List<Veiculo> veiculos, Map<Long, Double> mediasAvaliacoes) {
+        List<ResultadoAtributo> resultados = new ArrayList<>(comparar(veiculos));
+        resultados.add(compararAtributo(veiculos, "Avaliação", "Maior nota média",
+                veiculo -> mediasAvaliacoes.get(veiculo.getId()),
+                valor -> formatarNumero(valor, 1) + " / 5", false));
+        return List.copyOf(resultados);
+    }
+
     private ResultadoAtributo compararAtributo(
             List<Veiculo> veiculos,
             String nome,
@@ -55,7 +66,7 @@ public class Comparar {
                 .toList();
 
         if (comValor.isEmpty()) {
-            return new ResultadoAtributo(nome, observacao, valores, List.of());
+            return new ResultadoAtributo(nome, observacao, valores, List.of(), List.of());
         }
 
         double melhorValor = comValor.stream()
@@ -67,8 +78,12 @@ public class Comparar {
                 .filter(veiculo -> Double.compare(obterValor.apply(veiculo), melhorValor) == 0)
                 .map(Comparar::nomeCompleto)
                 .toList();
+        List<Long> vencedoresIds = comValor.stream()
+                .filter(veiculo -> Double.compare(obterValor.apply(veiculo), melhorValor) == 0)
+                .map(Veiculo::getId)
+                .toList();
 
-        return new ResultadoAtributo(nome, observacao, valores, vencedores);
+        return new ResultadoAtributo(nome, observacao, valores, vencedores, vencedoresIds);
     }
 
     private static String nomeCompleto(Veiculo veiculo) {
@@ -93,6 +108,7 @@ public class Comparar {
             String nome,
             String observacao,
             List<ValorVeiculo> valores,
-            List<String> vencedores) {
+            List<String> vencedores,
+            List<Long> vencedoresIds) {
     }
 }

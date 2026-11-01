@@ -139,7 +139,7 @@
             foto.src = car.fotoUrl
                 ? `/images/carros/${car.fotoUrl}`
                 : "/images/carros/default.jpg";
-            foto.alt = `${car.marca} ${car.model}`;
+            foto.alt = `${car.marca} ${car.modelo}`;
         }
         slot.classList.add("comparison-card--filled");
         slot.querySelector('[data-action="selecionar"]').textContent = "Trocar veículo";
@@ -152,6 +152,7 @@
         const button = event.target.closest("[data-action]");
         if (!button) return;
         const slot = button.closest("[data-slot]");
+        if (!slot) return;
         if (button.dataset.action === "selecionar") {
             activeSlot = slot.dataset.slot;
             search.value = "";

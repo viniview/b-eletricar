@@ -4,6 +4,7 @@ import com.example.b_eletricar.database.model.Veiculo;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +40,44 @@ class CompararTest {
                 .containsExactly("Sem dados", "Sem dados");
         assertThat(resultados.get(1).vencedores())
                 .containsExactly("Marca A Modelo A", "Marca B Modelo B");
+    }
+
+    @Test
+    void incluiMediaDasAvaliacoesComoCriterioEIdentificaEmpate() {
+        Veiculo carroA = veiculo("Marca A", "Modelo A", 150_000.0, 300, 50.0, 150, 8.0);
+        carroA.setId(1L);
+        Veiculo carroB = veiculo("Marca B", "Modelo B", 130_000.0, 450, 60.0, 120, 6.0);
+        carroB.setId(2L);
+
+        List<Comparar.ResultadoAtributo> resultados = comparar.compararComAvaliacoes(
+                List.of(carroA, carroB), Map.of(1L, 4.0, 2L, 5.0));
+
+        assertThat(resultados).hasSize(6);
+        assertThat(resultados.get(5).nome()).isEqualTo("Avaliação");
+        assertThat(resultados.get(5).valores())
+                .extracting(Comparar.ValorVeiculo::valor)
+                .containsExactly("4 / 5", "5 / 5");
+        assertThat(resultados.get(5).vencedoresIds()).containsExactly(2L);
+
+        List<Comparar.ResultadoAtributo> empate = comparar.compararComAvaliacoes(
+                List.of(carroA, carroB), Map.of(1L, 4.5, 2L, 4.5));
+        assertThat(empate.get(5).vencedoresIds()).containsExactly(1L, 2L);
+    }
+
+    @Test
+    void naoDestacaAvaliacaoQuandoNaoHaNotas() {
+        Veiculo carroA = veiculo("Marca A", "Modelo A", null, null, null, null, null);
+        carroA.setId(1L);
+        Veiculo carroB = veiculo("Marca B", "Modelo B", null, null, null, null, null);
+        carroB.setId(2L);
+
+        List<Comparar.ResultadoAtributo> resultados = comparar.compararComAvaliacoes(
+                List.of(carroA, carroB), Map.of());
+
+        assertThat(resultados.get(5).vencedoresIds()).isEmpty();
+        assertThat(resultados.get(5).valores())
+                .extracting(Comparar.ValorVeiculo::valor)
+                .containsExactly("Sem dados", "Sem dados");
     }
 
     private Veiculo veiculo(String marca, String modelo, Double preco, Integer autonomia,

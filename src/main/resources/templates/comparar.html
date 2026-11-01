@@ -76,7 +76,6 @@
                             </footer>
                         </article>
                     </div>
-                </section>
 
                 <footer class="comparison__actions">
                     <button class="comparison__button" type="submit" id="comparison-submit"
@@ -117,56 +116,95 @@
                 <header class="comparison-results__heading">
                     <p class="comparison__eyebrow">Análise lado a lado</p>
                     <h2 id="resultado-titulo">Resultado da comparação</h2>
-                    <p>Compare as especificações de cada veículo, uma ao lado da outra.</p>
+                    <p>Compare as especificações lado a lado; os melhores valores de cada critério ficam destacados.</p>
                 </header>
 
-                <div class="vcd-grid">
-                    <div class="vcd-coluna" th:each="slot : ${slots}" th:if="${slot.veiculo != null}">
-                        <div th:replace="~{fragments/veiculo-card-detalhe :: cardDetalhe(${slot.veiculo}, true)}"></div>
-
-                        <section class="avaliacoes"
-                                 th:attr="aria-labelledby=${'avaliacoes-titulo-' + slot.numero}">
-                            <h3 th:id="${'avaliacoes-titulo-' + slot.numero}">Avaliações dos usuários</h3>
-                            <p th:if="${slot.media != null}">
-                                Nota média:
-                                <strong th:text="${#numbers.formatDecimal(slot.media, 1, 1)}">0,0</strong>
-                                / 5 (<span th:text="${#lists.size(slot.comentarios)}">0</span> avaliações)
-                            </p>
-                            <p th:if="${slot.media == null and #lists.isEmpty(slot.comentarios)}">
-                                Este veículo ainda não recebeu avaliações.
-                            </p>
-                            <p th:if="${slot.media == null and !#lists.isEmpty(slot.comentarios)}">
-                                Ainda não há notas para as avaliações deste veículo.
-                            </p>
-
-                            <div class="avaliacoes__lista" th:if="${!#lists.isEmpty(slot.comentarios)}">
-                                <article class="avaliacoes__item" th:each="comentario : ${slot.comentarios}">
-                                    <h4 th:text="${comentario.autor.nome}">Usuário</h4>
-                                    <p class="avaliacoes__nota" th:if="${comentario.nota != null}">
-                                        <span th:each="estrela : ${#numbers.sequence(1, comentario.nota)}"
-                                              aria-hidden="true">&#9733;</span>
-                                        <span class="visually-hidden"
-                                              th:text="${comentario.nota + ' de 5 estrelas'}"></span>
-                                    </p>
-                                    <p th:text="${comentario.texto}">Comentário sobre o veículo.</p>
-                                    <time th:if="${comentario.dataCriacao != null}"
-                                          th:datetime="${comentario.dataCriacao}"
-                                          th:text="${#temporals.format(comentario.dataCriacao, 'dd/MM/yyyy HH:mm')}">
-                                        Data
-                                    </time>
-                                </article>
-                            </div>
-
-                            <a class="btn btn--outline btn--sm"
-                               th:href="@{/veiculos/{id}(id=${slot.veiculo.id})}">
-                                Avaliar este veículo
-                                <span aria-hidden="true">&rarr;</span>
-                            </a>
-                        </section>
-                    </div>
+                <div class="comparison-matrix-wrap" role="region" tabindex="0"
+                     aria-label="Tabela de especificações dos veículos comparados">
+                    <table class="comparison-matrix">
+                        <caption class="visually-hidden">Comparação de especificações dos veículos selecionados</caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">Especificação</th>
+                            <th scope="col" th:each="slot : ${slots}" th:if="${slot.veiculo != null}">
+                                <div class="comparison-matrix__vehicle">
+                                    <img th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(slot.veiculo.fotoUrl) ? 'default.jpg' : slot.veiculo.fotoUrl})}"
+                                         th:alt="${slot.veiculo.marca + ' ' + slot.veiculo.modelo}"
+                                         loading="lazy">
+                                    <span class="comparison-matrix__brand" th:text="${slot.veiculo.marca}">Marca</span>
+                                    <span class="comparison-matrix__model" th:text="${slot.veiculo.modelo}">Modelo</span>
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Preço</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:classappend="${#lists.size(resultados) > 0 and #lists.contains(resultados[0].vencedoresIds, slot.veiculo.id)} ? 'best-attribute'"
+                                th:text="${slot.veiculo.preco != null ? #numbers.formatCurrency(slot.veiculo.preco) : 'Não informado'}">
+                                R$ 0,00
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Carroceria</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:text="${slot.veiculo.carroceria != null ? slot.veiculo.carroceria : 'Não informada'}">
+                                SUV
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Autonomia</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:classappend="${#lists.size(resultados) > 1 and #lists.contains(resultados[1].vencedoresIds, slot.veiculo.id)} ? 'best-attribute'"
+                                th:text="${slot.veiculo.autonomiaKm != null ? slot.veiculo.autonomiaKm + ' km' : 'Não informada'}">
+                                0 km
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Bateria</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:classappend="${#lists.size(resultados) > 2 and #lists.contains(resultados[2].vencedoresIds, slot.veiculo.id)} ? 'best-attribute'"
+                                th:text="${slot.veiculo.capacidadeBateriaKwh != null ? slot.veiculo.capacidadeBateriaKwh + ' kWh' : 'Não informada'}">
+                                0 kWh
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Potência</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:classappend="${#lists.size(resultados) > 3 and #lists.contains(resultados[3].vencedoresIds, slot.veiculo.id)} ? 'best-attribute'"
+                                th:text="${slot.veiculo.potenciaCv != null ? slot.veiculo.potenciaCv + ' cv' : 'Não informada'}">
+                                0 cv
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Tempo de recarga</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:classappend="${#lists.size(resultados) > 4 and #lists.contains(resultados[4].vencedoresIds, slot.veiculo.id)} ? 'best-attribute'"
+                                th:text="${slot.veiculo.tempoCargaHoras != null ? slot.veiculo.tempoCargaHoras + ' horas' : 'Não informado'}">
+                                0 horas
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Fornecedor</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:text="${slot.veiculo.fornecedor != null ? slot.veiculo.fornecedor.nome : 'Não informado'}">
+                                Fornecedor
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Avaliação média</th>
+                            <td th:each="slot : ${slots}" th:if="${slot.veiculo != null}"
+                                th:classappend="${#lists.size(resultados) > 5 and #lists.contains(resultados[5].vencedoresIds, slot.veiculo.id)} ? 'best-attribute'"
+                                th:text="${slot.media != null ? #numbers.formatDecimal(slot.media, 1, 1) + ' / 5' : 'Sem notas'}">
+                                0,0 / 5
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </section>
 
+            </section>
             <script th:src="@{/js/comparar.js}" defer></script>
         </main>
     </body>

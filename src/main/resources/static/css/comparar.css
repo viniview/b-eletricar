@@ -48,13 +48,9 @@
     padding: 1.5rem;
     overflow: hidden;
     background: var(--surface);
-    border: 1px solid var(--line);
+    border: 1px solid #00c389;
     border-radius: 18px;
-    box-shadow: 0 8px 24px #0a0a0a;
-}
-
-.comparison-card--optional {
-    border-style: dashed;
+    box-shadow: 0 0 0 4px rgba(0, 195, 137, .2);
 }
 
 .comparison-card--filled {
@@ -214,10 +210,10 @@
 /* ---------- Modal de seleção ---------- */
 
 .picker {
-    --picker-bg: #0d1b26;
-    --picker-surface: #13273a;
-    --picker-line: #24394a;
-    --picker-muted: #8fa6b6;
+    --picker-bg: #0a0a0a;
+    --picker-surface: #161616;
+    --picker-line: #242424;
+    --picker-muted: #9a9a9a;
 
     width: min(720px, calc(100% - 2rem));
     max-height: min(85vh, 760px);
@@ -437,6 +433,107 @@
 .comparison-results__heading > p:last-child {
     margin: 0;
     color: var(--ink-soft);
+}
+
+.comparison-matrix-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+}
+
+.comparison-matrix {
+    width: 100%;
+    min-width: 720px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.comparison-matrix th,
+.comparison-matrix td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.comparison-matrix thead th {
+    color: var(--ink);
+    background: var(--bg);
+    vertical-align: top;
+}
+
+.comparison-matrix thead th:first-child {
+    width: 170px;
+    color: var(--ink-soft);
+    font-size: .82rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.comparison-matrix__vehicle {
+    display: grid;
+    gap: .35rem;
+    overflow-wrap: anywhere;
+}
+
+.comparison-matrix__vehicle img {
+    display: block;
+    width: 100%;
+    height: 270px;
+    margin-bottom: .35rem;
+    object-fit: cover;
+    border-radius: 9px;
+    background: var(--surface);
+}
+
+.comparison-matrix__brand {
+    color: var(--ink-soft);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.comparison-matrix__model {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.comparison-matrix tbody th {
+    width: 170px;
+    color: var(--ink-soft);
+    background: var(--bg);
+    font-weight: 600;
+}
+
+.comparison-matrix tbody td {
+    font-family: var(--font-display);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.comparison-matrix tbody td.best-attribute {
+    color: var(--volt-deep);
+    background: var(--volt-tint);
+    font-weight: 800;
+    text-decoration: underline;
+    text-decoration-color: var(--volt);
+    text-decoration-thickness: 2px;
+    text-underline-offset: .2em;
+}
+
+.comparison-matrix tbody tr:last-child th,
+.comparison-matrix tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.comparison-matrix tbody tr:hover td {
+    background: var(--bg);
+}
+
+.comparison-reviews {
+    margin-top: 2rem;
 }
 
 /* ---------- Avaliação e comentário ---------- */
