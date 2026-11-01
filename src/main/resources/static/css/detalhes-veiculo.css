@@ -1,0 +1,187 @@
+/* ============================================================
+   Tela: Detalhes do veículo
+   Só o que não existe no CSS geral (.btn, .avaliacoes, tokens).
+   ============================================================ */
+
+.container.detalhe {
+    max-width: 1000px;
+    padding-block: 2.5rem 4rem;
+}
+
+/* A classe .visually-hidden só existia no comparar.css */
+.detalhe .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.detalhe__voltar {
+    margin-bottom: 1.25rem;
+}
+
+/* ---------- Card (mesmo estilo escuro dos cards do catálogo) ---------- */
+.detalhe__card {
+    --surface: var(--black);
+    --surface-2: #161616;
+    --ink: var(--on-black);
+    --ink-soft: var(--on-black-soft);
+    --line: var(--black-line);
+    --tabela-borda: #3a3a3a;   /* borda da tabela, mais visível que --line */
+
+    overflow: hidden;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(12, 26, 36, .12);
+    color-scheme: dark;
+}
+
+/* Foto no topo, de ponta a ponta */
+.detalhe__foto {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    max-height: 440px;
+    object-fit: cover;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+}
+
+.detalhe__corpo {
+    display: grid;
+    gap: 1.75rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+/* ---------- Cabeçalho do card ---------- */
+.detalhe__cabecalho {
+    display: grid;
+    gap: .35rem;
+}
+
+.detalhe__marca {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.detalhe__titulo {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+
+.detalhe__preco {
+    margin: .25rem 0 0;
+    color: var(--volt);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 700;
+}
+
+.detalhe__subtitulo {
+    margin: 0 0 1rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+}
+
+/* ---------- Tabela de especificações ---------- */
+.spec-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--tabela-borda);
+    border-radius: 12px;
+}
+
+.spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.spec-table th,
+.spec-table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--tabela-borda);
+}
+
+/* Cabeçalho em verde, como o botão principal do menu */
+.spec-table thead th {
+    background: var(--volt);
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* Coluna dos atributos */
+.spec-table tbody th {
+    width: 40%;
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    font-weight: 600;
+    border-right: 1px solid var(--tabela-borda);
+}
+
+/* Coluna dos valores */
+.spec-table tbody td {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+.spec-table tbody tr:hover td {
+    background: #1d1d1d;
+}
+
+.spec-table tbody tr:last-child th,
+.spec-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.spec-table td.spec-table__vazio {
+    color: var(--ink-soft);
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* ---------- Ações ---------- */
+.detalhe__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+/* ---------- Avaliações ---------- */
+.detalhe .avaliacoes {
+    margin-top: 2rem;
+}
+
+@media (max-width: 720px) {
+    .detalhe__foto {
+        aspect-ratio: 16 / 10;
+    }
+
+    .spec-table tbody th {
+        width: 45%;
+    }
+
+    .detalhe__acoes .btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,210 @@
+/* ============================================================
+   Card de veículo (fragmento fragments/veiculo-card-detalhe)
+   Usado em: detalhes do veículo e comparação.
+   Prefixo .vcd para não colidir com o veiculo-card existente.
+   ============================================================ */
+
+/* Só é necessário se o CSS geral não define .visually-hidden */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ---------- Grade para vários cards ---------- */
+.vcd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 1rem;
+    align-items: start;
+    margin-top: 2rem;
+}
+
+/* ---------- Card ---------- */
+.vcd {
+    --surface: var(--black);
+    --surface-2: #161616;
+    --ink: var(--on-black);
+    --ink-soft: var(--on-black-soft);
+    --line: var(--black-line);
+    --tabela-borda: #3a3a3a;
+
+    container-type: inline-size;
+    container-name: vcd;
+
+    min-width: 0;
+    overflow: hidden;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(12, 26, 36, .12);
+    color-scheme: dark;
+}
+
+.vcd__foto {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 8;
+    max-height: 440px;
+    object-fit: cover;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+}
+
+.vcd__corpo {
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+/* ---------- Cabeçalho ---------- */
+.vcd__cabecalho {
+    display: grid;
+    gap: .35rem;
+}
+
+.vcd__marca {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.vcd__titulo {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+
+.vcd__preco {
+    margin: .25rem 0 0;
+    color: var(--volt);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 700;
+}
+
+/* ---------- Tabela ---------- */
+.vcd__specs {
+    overflow-x: auto;
+    border: 1px solid var(--tabela-borda);
+    border-radius: 12px;
+}
+
+.vcd-spec {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.vcd-spec th,
+.vcd-spec td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--tabela-borda);
+}
+
+.vcd-spec thead th {
+    background: var(--volt);
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.vcd-spec tbody th {
+    width: 40%;
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    font-weight: 600;
+    border-right: 1px solid var(--tabela-borda);
+}
+
+.vcd-spec tbody td {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.vcd-spec tbody tr:hover td { background: #1d1d1d; }
+
+.vcd-spec tbody tr:last-child th,
+.vcd-spec tbody tr:last-child td { border-bottom: 0; }
+
+.vcd-spec td.vcd-spec__vazio {
+    color: var(--ink-soft);
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 400;
+}
+
+.vcd__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+/* ---------- Versão compacta (comparação) ---------- */
+.vcd--compacto .vcd__foto {
+    aspect-ratio: 16 / 10;
+}
+
+.vcd--compacto .vcd__corpo {
+    gap: 1.25rem;
+    padding: 1.25rem;
+}
+
+.vcd--compacto .vcd__titulo {
+    font-size: 1.4rem;
+}
+
+.vcd--compacto .vcd__preco {
+    font-size: 1.25rem;
+}
+
+.vcd--compacto .vcd__acoes .btn {
+    width: 100%;
+}
+
+/* ---------- Adaptação pela largura do próprio card ---------- */
+@container vcd (max-width: 420px) {
+    .vcd__corpo {
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .vcd__titulo {
+        font-size: 1.25rem;
+    }
+
+    .vcd__preco {
+        font-size: 1.1rem;
+    }
+
+    .vcd-spec th,
+    .vcd-spec td {
+        padding: .65rem .75rem;
+        font-size: .85rem;
+    }
+
+    .vcd-spec thead th {
+        font-size: .7rem;
+    }
+
+    .vcd-spec tbody th {
+        width: 42%;
+    }
+}

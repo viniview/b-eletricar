@@ -8,6 +8,7 @@
         
         <main class="page container comparison">
             <link rel="stylesheet" th:href="@{/css/comparar.css}">
+            <link rel="stylesheet" th:href="@{/css/veiculo-card-detalhe.css}">
 
             <header class="comparison__intro">
                 <p class="comparison__eyebrow">Escolha com mais confiança</p>
@@ -116,47 +117,13 @@
                 <header class="comparison-results__heading">
                     <p class="comparison__eyebrow">Análise lado a lado</p>
                     <h2 id="resultado-titulo">Resultado da comparação</h2>
-                    <p>O destaque de cada atributo considera apenas os veículos com dados cadastrados.</p>
+                    <p>Compare as especificações de cada veículo, uma ao lado da outra.</p>
                 </header>
 
-                <div class="comparison-results__table-wrap" role="region" tabindex="0"
-                    aria-label="Tabela de comparação (role para os lados se necessário)">
-                    <table class="comparison-results__table">
-                        <caption class="visually-hidden">Melhor veículo em cada atributo</caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Atributo</th>
-                            <th scope="col">Valores</th>
-                            <th scope="col">Melhor resultado</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="resultado : ${resultados}">
-                            <th scope="row">
-                                <span th:text="${resultado.nome}"></span>
-                                <small th:text="${resultado.observacao}"></small>
-                            </th>
-                            <td>
-                                <ul class="comparison-results__values">
-                                    <li th:each="valor : ${resultado.valores}">
-                                        <span th:text="|${valor.veiculo}: |"></span>
-                                        <strong th:text="${valor.valor}"></strong>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>
-                                <span class="comparison-results__empty"
-                                    th:if="${#lists.isEmpty(resultado.vencedores)}">Sem dados</span>
-                                <ul class="comparison-results__winners"
-                                    th:unless="${#lists.isEmpty(resultado.vencedores)}">
-                                    <li th:each="vencedor : ${resultado.vencedores}" th:text="${vencedor}"></li>
-                                </ul>
-                                <span class="comparison-results__tie"
-                                    th:if="${resultado.vencedores.size() > 1}">Empate</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="vcd-grid">
+                    <th:block th:each="slot : ${slots}" th:if="${slot.veiculo != null}">
+                        <div th:replace="~{fragments/veiculo-card-detalhe :: cardDetalhe(${slot.veiculo}, true)}"></div>
+                    </th:block>
                 </div>
             </section>
 
