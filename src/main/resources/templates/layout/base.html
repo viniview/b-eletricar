@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       th:fragment="layout(title, content)">
@@ -9,21 +10,85 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+
+   
+<button id="accessibility-btn"
+        class="accessibility-btn"
+        type="button"
+        aria-label="Abrir opções de acessibilidade"
+        aria-expanded="false"
+        aria-controls="accessibility-panel">
+
+    <svg viewBox="0 0 24 24"
+         width="25"
+         height="25"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="1.8"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <circle cx="12" cy="7" r="1.5"/>
+        <path d="M7 10.5 12 12l5-1.5"/>
+        <path d="m9 13 3 5 3-5"/>
+    </svg>
+</button>
+
+<div id="accessibility-panel"
+     class="accessibility-panel"
+     role="region"
+     aria-labelledby="accessibility-title"
+     hidden>
+
+    <div class="accessibility-panel__header">
+        <h2 id="accessibility-title">Acessibilidade</h2>
+
+        <button id="accessibility-close"
+                class="accessibility-close"
+                type="button"
+                aria-label="Fechar opções de acessibilidade">
+            &times;
+        </button>
+    </div>
+
+    <div class="accessibility-group">
+        <span>Tamanho do texto</span>
+        <div class="accessibility-actions">
+            <button id="font-decrease" type="button">A− Diminuir</button>
+            <button id="font-increase" type="button">A+ Aumentar</button>
+        </div>
+    </div>
+
+    <div class="accessibility-group">
+        <span>Contraste</span>
+        <button id="contrast-toggle" type="button">
+            Alto contraste
+        </button>
+    </div>
+
+    <button id="font-reset"
+            class="accessibility-reset"
+            type="button">
+        Restaurar padrão
+    </button>
+</div>
+
+
     <header th:replace="~{fragments/header :: header}">
-        <!-- Conteúdo do cabeçalho -->
     </header>
 
-    <main class="page" th:replace="${content}">
-        <!-- conteúdo da página entra aqui -->
+    <main id="conteudo-principal" class="page" th:replace="${content}">
     </main>
 
     <footer th:replace="~{fragments/footer :: footer}">
-        <!-- Conteúdo do rodapé -->
     </footer>
 
     <script th:src="@{/js/main.js}"></script>
+
 </body>
 </html>

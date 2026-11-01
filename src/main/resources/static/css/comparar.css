@@ -677,3 +677,160 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+
+/* ==========================================
+   ACESSIBILIDADE - COMPARAÇÃO DE VEÍCULOS
+   ========================================== */
+
+body.high-contrast .comparison,
+body.high-contrast .comparison-results,
+body.high-contrast .feedback-card,
+body.high-contrast .comparison-card {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+/* Modal de seleção */
+
+body.high-contrast .picker {
+    --picker-bg: #000000;
+    --picker-surface: #000000;
+    --picker-line: #ffffff;
+    --picker-muted: #ffffff;
+
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+body.high-contrast .picker__title,
+body.high-contrast .picker__filters label,
+body.high-contrast .picker__status,
+body.high-contrast .picker__option-name,
+body.high-contrast .picker__option-meta,
+body.high-contrast .picker__option-price {
+    color: #ffffff !important;
+}
+
+/* Campo de pesquisa e filtros */
+
+body.high-contrast .picker__search,
+body.high-contrast .picker__filters select {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+body.high-contrast .picker__search::placeholder {
+    color: #ffffff !important;
+    opacity: 1;
+}
+
+body.high-contrast .picker__filters select:disabled {
+    color: #cccccc !important;
+    border-color: #cccccc !important;
+    opacity: 1 !important;
+}
+
+/* Opções de veículos */
+
+body.high-contrast .picker__option {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+body.high-contrast .picker__option:hover:not(:disabled),
+body.high-contrast .picker__option:focus-visible {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border-color: #ffff00 !important;
+}
+
+body.high-contrast .picker__option:hover:not(:disabled) *,
+body.high-contrast .picker__option:focus-visible * {
+    color: #000000 !important;
+}
+
+/* Opção selecionada */
+
+body.high-contrast .picker__option[aria-pressed="true"],
+body.high-contrast .picker__chip[aria-pressed="true"] {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border: 2px solid #ffff00 !important;
+    opacity: 1 !important;
+}
+
+body.high-contrast .picker__option[aria-pressed="true"] *,
+body.high-contrast .picker__chip[aria-pressed="true"] {
+    color: #000000 !important;
+}
+
+/* Chips de seleção */
+
+body.high-contrast .picker__chip {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+/* Itens indisponíveis */
+
+body.high-contrast .picker__option:disabled,
+body.high-contrast .picker__chip:disabled {
+    background: #000000 !important;
+    color: #cccccc !important;
+    border-color: #cccccc !important;
+    opacity: 1 !important;
+    cursor: not-allowed;
+}
+
+/* Botão de fechar */
+
+body.high-contrast .picker__close {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+/* Mensagens */
+
+body.high-contrast .comparison__message {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+body.high-contrast .comparison__message--error {
+    color: #ffffff !important;
+    border-color: #ff8080 !important;
+}
+
+body.high-contrast .comparison__message--success {
+    color: #ffffff !important;
+    border-color: #ffff00 !important;
+}
+
+/* Estrelas de avaliação */
+
+body.high-contrast .stars label {
+    color: #ffffff !important;
+}
+
+body.high-contrast .stars input:checked ~ label,
+body.high-contrast .stars label:hover,
+body.high-contrast .stars label:hover ~ label {
+    color: #ffff00 !important;
+}
+
+/* Foco de teclado */
+
+body.high-contrast .picker :focus-visible,
+body.high-contrast .comparison :focus-visible {
+    outline: 4px solid #ffff00 !important;
+    outline-offset: 4px !important;
+}

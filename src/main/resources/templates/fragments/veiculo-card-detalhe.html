@@ -9,9 +9,9 @@
          th:object="${veiculo}">
 
     <img class="vcd__foto"
-         th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(veiculo.fotoUrl) ? 'default.jpg' : veiculo.fotoUrl})}"
-         th:alt="${veiculo.marca + ' ' + veiculo.modelo}"
-         loading="lazy">
+        th:src="@{${veiculo.fotoCaminho}}"
+        th:alt="${veiculo.marca + ' ' + veiculo.modelo}"
+        loading="lazy">
 
     <div class="vcd__corpo">
         <header class="vcd__cabecalho">

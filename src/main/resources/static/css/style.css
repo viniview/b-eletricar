@@ -46,8 +46,8 @@ main { flex: 1; }
 }
 
 :focus-visible {
-    outline: 2px solid var(--volt-deep);
-    outline-offset: 3px;
+    outline: 3px solid #00C389;
+    outline-offset: 4px;
 }
 
 /* ---------- Cabeçalho ---------- */
@@ -836,4 +836,434 @@ a.avatar:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(0, 195, 137, 
 }
 .veiculo-card:hover {
     box-shadow: 0 10px 28px rgba(12, 26, 36, .22);
+}
+
+
+
+/**/
+
+/* ---------- Acessibilidade ---------- */
+
+.accessibility-btn {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    min-height: 54px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--volt);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+    background: var(--black);
+    color: var(--volt);
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
+    transition: background .2s, color .2s, transform .2s;
+}
+
+.accessibility-btn svg {
+    width: 25px;
+    height: 25px;
+}
+
+.accessibility-btn:hover {
+    background: var(--volt);
+    color: var(--black);
+    transform: translateY(-2px);
+}
+
+.accessibility-btn:focus-visible {
+    outline: 3px solid var(--volt-deep);
+    outline-offset: 4px;
+}
+
+.accessibility-panel {
+    position: fixed;
+    right: 24px;
+    bottom: 90px;
+    width: min(310px, calc(100vw - 32px));
+    padding: 20px;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .16);
+    z-index: 1000;
+    flex-direction: column;
+    gap: 18px;
+    font-family: var(--font-body);
+}
+
+.accessibility-panel[hidden] {
+    display: none !important;
+}
+
+.accessibility-panel:not([hidden]) {
+    display: flex;
+}
+
+.accessibility-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.accessibility-panel__header h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 18px;
+}
+
+.accessibility-close {
+    border: none;
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.accessibility-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.accessibility-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.accessibility-panel button:not(.accessibility-close) {
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.accessibility-panel button:hover {
+    border-color: var(--volt);
+    background: var(--volt-tint);
+}
+
+.accessibility-panel button:focus-visible {
+    outline: 3px solid var(--volt-deep);
+    outline-offset: 3px;
+}
+
+.accessibility-reset {
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .accessibility-btn {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .accessibility-panel {
+        right: 16px;
+        bottom: 80px;
+    }
+}
+
+
+/* ==========================================
+   MODO DE ALTO CONTRASTE - BELETRICAR
+   ========================================== */
+
+body.high-contrast {
+    --bg: #000000;
+    --surface: #000000;
+    --ink: #ffffff;
+    --ink-soft: #ffffff;
+    --line: #ffffff;
+
+    --volt: #ffff00;
+    --volt-deep: #ffff00;
+    --volt-tint: #252500;
+
+    --black: #000000;
+    --black-line: #ffffff;
+    --on-black: #ffffff;
+    --on-black-soft: #ffffff;
+
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* Fundos e textos gerais */
+body.high-contrast,
+body.high-contrast main,
+body.high-contrast .page,
+body.high-contrast section,
+body.high-contrast article,
+body.high-contrast aside,
+body.high-contrast footer,
+body.high-contrast header,
+body.high-contrast nav,
+body.high-contrast .container {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+/* Títulos, parágrafos e textos */
+body.high-contrast h1,
+body.high-contrast h2,
+body.high-contrast h3,
+body.high-contrast h4,
+body.high-contrast p,
+body.high-contrast span,
+body.high-contrast label,
+body.high-contrast li,
+body.high-contrast strong,
+body.high-contrast small,
+body.high-contrast legend {
+    color: #ffffff !important;
+}
+
+/* Links */
+body.high-contrast a {
+    color: #ffff00 !important;
+    text-decoration: underline !important;
+}
+
+/* Botões */
+body.high-contrast button,
+body.high-contrast .btn {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+/* Botões ao passar o mouse */
+body.high-contrast button:hover,
+body.high-contrast .btn:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+
+/* Campos de formulário */
+body.high-contrast input,
+body.high-contrast select,
+body.high-contrast textarea {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+body.high-contrast input::placeholder,
+body.high-contrast textarea::placeholder {
+    color: #ffffff !important;
+    opacity: 1;
+}
+
+/* Cartões, tabelas e caixas */
+body.high-contrast .card,
+body.high-contrast .vehicle-card,
+body.high-contrast .vehicle-detail,
+body.high-contrast .comparison,
+body.high-contrast table,
+body.high-contrast th,
+body.high-contrast td,
+body.high-contrast tr {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+/* Elementos selecionados */
+body.high-contrast :focus-visible {
+    outline: 4px solid #ffff00 !important;
+    outline-offset: 4px !important;
+}
+
+/* Ícones */
+body.high-contrast svg {
+    color: #ffff00;
+}
+
+/* Painel de acessibilidade permanece legível */
+body.high-contrast .accessibility-panel {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffff00 !important;
+}
+
+body.high-contrast .accessibility-panel h2,
+body.high-contrast .accessibility-panel span {
+    color: #ffffff !important;
+}
+
+body.high-contrast .accessibility-panel button {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+/* Botão de acessibilidade no alto contraste */
+body.high-contrast .accessibility-btn {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+/* Corrigir links que funcionam como botões */
+body.high-contrast .site-nav__link--accent {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+body.high-contrast .site-nav__link--accent:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+
+body.high-contrast .brand {
+    color: #ffffff !important;
+}
+
+body.high-contrast .avatar {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+body.high-contrast main {
+    scroll-margin-top: 90px;
+}
+
+body.high-contrast main :target {
+    scroll-margin-top: 90px;
+}
+
+
+/* ==========================================
+   ESTRELAS DAS AVALIAÇÕES
+   ========================================== */
+
+.avaliacoes__estrelas-linha {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.avaliacoes__estrelas-linha input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.avaliacoes__estrelas-linha label {
+    color: var(--ink-soft);
+    font-size: 32px;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.avaliacoes__estrelas-linha label:hover,
+.avaliacoes__estrelas-linha label:hover ~ label,
+.avaliacoes__estrelas-linha input:checked ~ label {
+    color: var(--volt);
+}
+
+.avaliacoes__estrelas-linha input:focus-visible + label {
+    outline: 3px solid var(--volt);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* Estrelas no alto contraste */
+body.high-contrast .avaliacoes__estrelas-linha label,
+body.high-contrast .avaliacoes__estrelas-linha label span {
+    color: #ffffff !important;
+}
+
+body.high-contrast .avaliacoes__estrelas-linha input:checked ~ label,
+body.high-contrast .avaliacoes__estrelas-linha input:checked ~ label span,
+body.high-contrast .avaliacoes__estrelas-linha label:hover,
+body.high-contrast .avaliacoes__estrelas-linha label:hover ~ label {
+    color: #ffff00 !important;
+}
+
+
+/* ==========================================
+   LINK DE ACESSIBILIDADE
+   ========================================== */
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 2000;
+
+    padding: 12px 18px;
+    border-radius: 8px;
+
+    background: var(--volt);
+    color: var(--black);
+
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transform: translateY(-150%);
+    transition: transform .2s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+    outline: 3px solid var(--volt-deep);
+    outline-offset: 3px;
+}
+/* Correção do botão flutuante de acessibilidade no alto contraste */
+
+body.high-contrast .accessibility-btn {
+    background: #000000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+    box-shadow: 0 0 0 2px #000000 !important;
+}
+
+/* Ícone visível */
+body.high-contrast .accessibility-btn svg {
+    display: block;
+    width: 25px;
+    height: 25px;
+    stroke: #ffff00 !important;
+    fill: none !important;
+}
+
+/* Efeito ao passar o mouse */
+body.high-contrast .accessibility-btn:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+}
+
+body.high-contrast .accessibility-btn:hover svg {
+    stroke: #000000 !important;
+}
+
+/* Hover dos botões do painel de acessibilidade */
+body.high-contrast .accessibility-panel button:hover {
+    background: #ffff00 !important;
+    color: #000000 !important;
+    border-color: #ffff00 !important;
 }
