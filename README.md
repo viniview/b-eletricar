@@ -43,3 +43,74 @@ As funcionalidades do sistema são organizadas de acordo com os diferentes tipos
 
 - Gerenciar os veículos e as informações disponibilizadas no catálogo;
 - Gerenciar os demais dados necessários ao funcionamento da plataforma.
+
+## Requisitos e como rodar
+
+Docker com Compose v2. Para rodar pela IDE, também JDK 21.
+
+## 1. Arquivo `.env`
+
+Crie um `.env` na raiz do projeto (mesma pasta do `compose.yaml`):
+
+```env
+POSTGRES_DB=beletricar
+POSTGRES_USER=beletricar
+POSTGRES_PASSWORD=beletricar
+GOOGLE_CLIENT_ID=codigo_aqui
+GOOGLE_CLIENT_SECRET=segredo_do_codigo_aqui
+```
+O .env impede que envie para o repositorio remoto
+**Por que está exposto aqui:** o `.env` está no `.gitignore`, então não vai para o repositório, e sem ele o `compose.yaml` não tem as variáveis do app. Como o projeto é acadêmico, os valores são apenas de desenvolvimento e não protegem nada real, e deixá-los no README permite que qualquer colega ou professor rode o projeto sem pedir nada.
+
+## 2. Subir
+
+```bash
+docker compose up --build -d
+docker compose logs -f app     # aguarde "Started BEletricarApplication"
+```
+
+As tabelas são criadas automaticamente pelo Hibernate quando o app sobe. O site fica em http://localhost:8080.
+
+## 3. Reiniciar
+
+```bash
+docker compose restart app          # reinicia só o app
+docker compose up --build -d        # após alterar o código
+docker compose down                 # para tudo (mantém os dados)
+docker compose down -v              # para tudo e APAGA o banco
+```
+
+## 4. Preencher o banco
+
+Só depois de o app ter subido (é ele que cria as tabelas):
+
+```bash
+docker compose exec -T db psql -U beletricar -d beletricar < database/popular_banco.sql
+```
+
+No PowerShell, o `<` não funciona; use:
+
+```powershell
+Get-Content database/popular_banco.sql -Raw | docker compose exec -T db psql -U beletricar -d beletricar
+```
+
+Insere 9 fornecedores, 4 usuários e 21 veículos. **Rode uma única vez**: repetir duplica os fornecedores e gera erros. Para refazer, use `docker compose down -v`, suba de novo e rode o script.
+
+Logins criados pelo script: `admin@beletricar.com` / `admin123` e, como usuário comum, `ana.souza@exemplo.com` / `user1234`.
+
+## 5. Desenvolvimento pela IDE
+
+O banco continua no Docker; só o app roda na IDE.
+
+```bash
+docker compose stop app        # libera a porta 8080 (se o app estiver no Docker)
+docker compose up -d db
+```
+Em application-docker.properties
+    rodando com ide -> spring.datasource.url=jdbc:postgresql://localhost:5432/beletricar
+    rodando com app e db no docker -> spring.datasource.url=jdbc:postgresql://db:5432/beletricar
+Execute `BEletricarApplication` com estas variáveis de ambiente na configuração de execução:
+
+Ou pelo terminal: `./mvnw spring-boot:run` (com as variáveis exportadas).
+
+**Não ative o perfil `docker`** na IDE. Ele aponta para o host `db`, que só existe dentro da rede do Compose. Sem perfil, o app usa `localhost:5432`, que funciona porque o `compose.yaml` publica essa porta.
