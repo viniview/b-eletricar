@@ -32,13 +32,12 @@ As funcionalidades do sistema são organizadas de acordo com os diferentes tipos
 - Visualizar o catálogo de veículos elétricos;
 - Consultar as especificações de um veículo;
 - Pesquisar e filtrar veículos de acordo com suas características.
-- Comparar diferentes modelos.
 
 ### Usuário cadastrado -
 
 - Realizar todas as funcionalidades do visitante (herança);
+- Comparar diferentes modelos.
 - Realizar avaliações dos veículos;
-- Compartilhar opiniões e experiências com outros usuários;
 
 ### Administrador -
 

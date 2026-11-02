@@ -5,7 +5,7 @@
 <article class="veiculo-card" th:fragment="card(veiculo)">
     <a class="veiculo-card__media" th:href="@{/veiculos/{id}(id=${veiculo.id})}" tabindex="-1" aria-hidden="true">
         <img class="veiculo-card__foto"
-            th:src="@{${veiculo.fotoCaminho}}"
+            th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(veiculo.fotoUrl) ? 'default.jpg' : veiculo.fotoUrl})}"
             th:alt="${veiculo.marca + ' ' + veiculo.modelo}"
             loading="lazy">
     </a>

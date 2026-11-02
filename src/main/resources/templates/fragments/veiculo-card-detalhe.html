@@ -9,7 +9,7 @@
          th:object="${veiculo}">
 
     <img class="vcd__foto"
-        th:src="@{${veiculo.fotoCaminho}}"
+        th:src="@{/images/carros/{foto}(foto=${#strings.isEmpty(veiculo.fotoUrl) ? 'default.jpg' : veiculo.fotoUrl})}"
         th:alt="${veiculo.marca + ' ' + veiculo.modelo}"
         loading="lazy">
 
